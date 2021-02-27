@@ -8,7 +8,7 @@ const createWindow = () => {
     },
   });
   window.loadFile("app/index.html");
-  // window.removeMenu();
+  window.removeMenu();
   window.maximize();
   window.show();
 };

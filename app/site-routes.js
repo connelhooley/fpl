@@ -1,9 +1,9 @@
 const Home = require("./home");
-const FdrChart = require("./fdr/charts/all-teams");
+const FdrSideBySideChart = require("./fdr/charts/side-by-side");
 const FdrTable = require("./fdr/table");
 
 module.exports = [
   { path: "/", component: Home },
-  { path: "/fdr/charts", component: FdrChart },
+  { path: "/fdr/chart/side-by-side", component: FdrSideBySideChart },
   { path: "/fdr/table", component: FdrTable },
 ];
