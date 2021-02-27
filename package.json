@@ -23,6 +23,8 @@
   },
   "dependencies": {
     "d3": "^6.5.0",
-    "electron-fetch": "^1.7.3"
+    "electron-fetch": "^1.7.3",
+    "vue": "^2.6.12",
+    "vue-router": "^3.5.1"
   }
 }

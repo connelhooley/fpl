@@ -1,43 +1,16 @@
-const { ipcRenderer } = require("electron");
 const d3 = require("d3");
 
-require("./extensions");
-
-const loading = document.querySelector("#loading");
-loading.textContent = "Loading";
-
-Promise.all([ipcRenderer.invoke("static-api"), ipcRenderer.invoke("fixture-api")]).then(([static, fixtures]) => {
-  const teams = static.teams.toLookUp((team) => team.id, (team) => team.name);
-  const fixtureDifficultyData = static.teams.map(team => ({
-    teamId: team.id,
-    weeks: static.events
-      .filter(week => !week.finished && !week.is_current)
-      .slice(0, 14)
-      .map(week => {
-        const weekFixtures = fixtures
-          .filter((fixture) => fixture.event === week.id)
-          .filter((fixture) => fixture.team_h === team.id || fixture.team_a === team.id)
-          .map(fixture => ({
-            difficulty: team.id === fixture.team_h
-              ? fixture.team_h_difficulty
-              : fixture.team_a_difficulty,
-            oppositionId: team.id === fixture.team_h
-              ? fixture.team_a
-              : fixture.team_h,
-          }));
-        return {
-          weekId: week.id,
-          difficulty: weekFixtures.map(wf => wf.difficulty).average(),
-          oppositions: weekFixtures.map(wf => ({ teamId: wf.oppositionId, difficulty: wf.difficulty }))
-        };
-      }),
-  }));
-
-  const color = d3.scaleOrdinal()
-    .domain(fixtureDifficultyData.map(teamData => teamData.teamId))
-    .range(d3.schemeSet2);
-
-  fixtureDifficultyData.forEach(teamData => {
+module.exports = {
+  template: `<svg ref="svg"></svg>`,
+  props: {
+    width: Number,
+    height: Number,
+    color: String,
+    teamId: Number,
+    weeks: Array,
+    teams: Object,
+  },
+  mounted() {
     const titleHeight = 20;
     const margin = {
       top: 30,
@@ -45,20 +18,20 @@ Promise.all([ipcRenderer.invoke("static-api"), ipcRenderer.invoke("fixture-api")
       bottom: 30,
       left: 30,
     };
-    const width = 350 - margin.left - margin.right;
-    const height = 170 - margin.top - margin.bottom;
+    const width = (this.width ?? 350) - margin.left - margin.right;
+    const height = (this.height ?? 170) - margin.top - margin.bottom;
 
     const tooltip = d3.select("body")
       .append("div")
       .attr("class", "tooltip")
       .style("position", "absolute")
+      .style("display", "block")
       .style("opacity", 0)
       .style("border-radius", "4px")
       .style("padding", "5px");
 
-    const svg = d3.select("#charts")
-      .append("svg")
-      .style("margin-bottom", "2rem")
+    const svg = d3.select(this.$refs.svg)
+      .attr("class", "chart")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom + titleHeight);
 
@@ -70,14 +43,14 @@ Promise.all([ipcRenderer.invoke("static-api"), ipcRenderer.invoke("fixture-api")
       .attr("x", (width + margin.left + margin.right) / 2)
       .attr("y", titleHeight)
       .style("font-size", 15)
-      .text(teams[teamData.teamId]);
+      .text(this.teams[this.teamId]);
 
     const chart = svg
       .append("g")
       .attr("transform", `translate(${margin.left}, ${margin.top + titleHeight})`);
 
     const x = d3.scalePoint()
-      .domain(teamData.weeks.map(f => f.weekId))
+      .domain(this.weeks.map(f => f.weekId))
       .range([0, width]);
     chart.append("g")
       .attr("transform", `translate(0, ${height})`)
@@ -98,14 +71,14 @@ Promise.all([ipcRenderer.invoke("static-api"), ipcRenderer.invoke("fixture-api")
 
     const lineData = [
       0,
-      ...teamData.weeks
+      ...this.weeks
         .filter((week) => week.oppositions.length === 0)
-        .map((week) => teamData.weeks.indexOf(week))
-        .flatMap((i) => [i, i+1]),
-      teamData.weeks.length,
+        .map((week) => this.weeks.indexOf(week))
+        .flatMap((i) => [i, i + 1]),
+      this.weeks.length,
     ]
       .pairwise()
-      .map(([start, stop]) => teamData.weeks.slice(start, stop));
+      .map(([start, stop]) => this.weeks.slice(start, stop));
 
     chart
       .selectAll(".line")
@@ -114,28 +87,29 @@ Promise.all([ipcRenderer.invoke("static-api"), ipcRenderer.invoke("fixture-api")
       .append("path")
       .attr("class", "line")
       .attr("d", (d) => line(d))
-      .attr("stroke", color(teamData.teamId))
+      .attr("stroke", this.color)
       .style("stroke-width", 4)
       .style("fill", "none");
 
     chart
       .selectAll(".circle")
-      .data(teamData.weeks.filter((f) => !isNaN(f.difficulty)))
+      .data(this.weeks.filter((f) => !isNaN(f.difficulty)))
       .enter()
       .append("circle")
       .attr("class", "circle")
       .attr("cx", (d) => x(d.weekId))
       .attr("cy", (d) => y(d.difficulty))
       .attr("r", (d) => 4 + (d.oppositions.length * 2))
-      .style("fill", (d) => d3.rgb(color(teamData.teamId)).brighter(d.oppositions.length > 1 ? .7 : 0))
+      .style("fill", (d) => d3.rgb(this.color).brighter(d.oppositions.length > 1 ? .7 : 0))
       .on("mouseover", (e, d) => {
         tooltip
           .transition()
           .duration(200)
-          .style("opacity", 1);
+          .style("opacity", 1)
+          .style("display", "block");
         tooltip
           .html(d.oppositions.map(({ teamId, difficulty }) =>
-            `${teams[teamId]} (${difficulty})`).join("<br>"))
+            `${this.teams[teamId]} (${difficulty})`).join("<br>"))
           .style("left", `${e.pageX + 18}px`)
           .style("top", `${e.pageY - 20}px`);
       })
@@ -145,11 +119,8 @@ Promise.all([ipcRenderer.invoke("static-api"), ipcRenderer.invoke("fixture-api")
           .duration(500)
           .style("opacity", 0)
           .on("end", () => {
-            tooltip
-              .style("left", "0")
-              .style("top", "0")
+            tooltip.style("display", "none");
           });
       });
-  });
-  loading.textContent = "";
-});
+  },
+};

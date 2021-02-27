@@ -18,3 +18,7 @@ h1 {
   background-color: white;
   color: black;
 }
+
+#fdr-all-teams .chart {
+  margin-bottom: 2rem;
+}

@@ -7,7 +7,8 @@ const createWindow = () => {
       nodeIntegration: true,
     },
   });
-  window.loadFile("fixture-difficulty.html");
+  window.loadFile("app/index.html");
+  // window.removeMenu();
   window.maximize();
   window.show();
 };

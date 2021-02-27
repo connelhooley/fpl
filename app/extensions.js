@@ -12,3 +12,10 @@ Array.prototype.pairwise = function () {
 Array.prototype.average = function () {
   return this.reduce((prev, curr) => (prev + curr), 0) / this.length;
 };
+
+Array.prototype.toLookUp = function (getId, getVal) {
+  return this.reduce((acc, curr) => ({
+    ...acc,
+    [getId(curr)]: getVal(curr),
+  }), {})
+};

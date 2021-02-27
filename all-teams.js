@@ -5,10 +5,7 @@ const loading = document.querySelector("#loading");
 loading.textContent = "Loading";
 
 Promise.all([ipcRenderer.invoke("static-api"), ipcRenderer.invoke("fixture-api")]).then(([static, fixtures]) => {
-  const teams = static.teams.reduce((teams, team) => ({
-    ...teams,
-    [team.id]: team.name,
-  }), {});
+  const teams = static.teams.toLookUp((team) => team.id, (team) => team.name);
 
   const fixtureDifficulties = fixtures
     .filter((fixture) => fixture.started !== true)
@@ -23,7 +20,7 @@ Promise.all([ipcRenderer.invoke("static-api"), ipcRenderer.invoke("fixture-api")
         team: teams[fixture.team_a],
         week: fixture.event,
         difficulty: fixture.team_a_difficulty,
-      }
+      },
     ]);
 
   const data = Object.values(teams).map((team) => ({
@@ -37,7 +34,7 @@ Promise.all([ipcRenderer.invoke("static-api"), ipcRenderer.invoke("fixture-api")
     top: 10,
     right: 100,
     bottom: 30,
-    left: 30
+    left: 30,
   };
   const width = 1100 - margin.left - margin.right;
   const height = 450 - margin.top - margin.bottom;
