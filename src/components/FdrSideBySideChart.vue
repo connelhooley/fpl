@@ -1,7 +1,11 @@
-const d3 = require("d3");
+<template>
+  <svg ref="svg"></svg>
+</template>
 
-module.exports = {
-  template: `<svg ref="svg"></svg>`,
+<script>
+import * as d3 from "d3";
+
+export default {
   props: {
     width: Number,
     height: Number,
@@ -21,7 +25,8 @@ module.exports = {
     const width = (this.width ?? 350) - margin.left - margin.right;
     const height = (this.height ?? 170) - margin.top - margin.bottom;
 
-    const tooltip = d3.select("body")
+    const tooltip = d3
+      .select("body")
       .append("div")
       .attr("class", "tooltip")
       .style("position", "absolute")
@@ -30,7 +35,8 @@ module.exports = {
       .style("border-radius", "4px")
       .style("padding", "5px");
 
-    const svg = d3.select(this.$refs.svg)
+    const svg = d3
+      .select(this.$refs.svg)
       .attr("class", "chart")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom + titleHeight);
@@ -47,25 +53,25 @@ module.exports = {
 
     const chart = svg
       .append("g")
-      .attr("transform", `translate(${margin.left}, ${margin.top + titleHeight})`);
+      .attr(
+        "transform",
+        `translate(${margin.left}, ${margin.top + titleHeight})`
+      );
 
-    const x = d3.scalePoint()
-      .domain(this.weeks.map(f => f.weekId))
+    const x = d3
+      .scalePoint()
+      .domain(this.weeks.map((f) => f.weekId))
       .range([0, width]);
-    chart.append("g")
+    chart
+      .append("g")
       .attr("transform", `translate(0, ${height})`)
       .call(d3.axisBottom(x));
 
-    const y = d3.scaleLinear()
-      .domain([1, 5])
-      .range([height, 0]);
-    chart.append("g")
-      .call(d3.axisLeft(
-        d3.scalePoint()
-          .domain([1, 2, 3, 4, 5])
-          .range([height, 0])));
+    const y = d3.scaleLinear().domain([1, 5]).range([height, 0]);
+    chart.append("g").call(d3.axisLeft(y).ticks(5));
 
-    const line = d3.line()
+    const line = d3
+      .line()
       .x((d) => x(d.weekId))
       .y((d) => y(d.difficulty));
 
@@ -99,8 +105,10 @@ module.exports = {
       .attr("class", "circle")
       .attr("cx", (d) => x(d.weekId))
       .attr("cy", (d) => y(d.difficulty))
-      .attr("r", (d) => 4 + (d.oppositions.length * 2))
-      .style("fill", (d) => d3.rgb(this.color).brighter(d.oppositions.length > 1 ? .7 : 0))
+      .attr("r", (d) => 4 + d.oppositions.length * 2)
+      .style("fill", (d) =>
+        d3.rgb(this.color).brighter(d.oppositions.length > 1 ? 0.7 : 0)
+      )
       .on("mouseover", (e, d) => {
         tooltip
           .transition()
@@ -108,8 +116,14 @@ module.exports = {
           .style("opacity", 1)
           .style("display", "block");
         tooltip
-          .html(d.oppositions.map(({ teamId, difficulty }) =>
-            `${this.teams[teamId]} (${difficulty})`).join("<br>"))
+          .html(
+            d.oppositions
+              .map(
+                ({ teamId, difficulty }) =>
+                  `${this.teams[teamId]} (${difficulty})`
+              )
+              .join("<br>")
+          )
           .style("left", `${e.pageX + 18}px`)
           .style("top", `${e.pageY - 20}px`);
       })
@@ -124,3 +138,4 @@ module.exports = {
       });
   },
 };
+</script>
