@@ -35,7 +35,7 @@ async function createWindow() {
     win.loadURL('app://./index.html')
   }
   win.maximize();
-  win.removeMenu();
+  // win.removeMenu();
 }
 
 // Quit when all windows are closed.

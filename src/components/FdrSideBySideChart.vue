@@ -1,5 +1,5 @@
 <template>
-  <svg ref="svg"></svg>
+  <svg ref="svg" class="inline"></svg>
 </template>
 
 <script>
@@ -31,13 +31,10 @@ export default {
       .attr("class", "tooltip")
       .style("position", "absolute")
       .style("display", "block")
-      .style("opacity", 0)
-      .style("border-radius", "4px")
-      .style("padding", "5px");
+      .style("opacity", 0);
 
     const svg = d3
       .select(this.$refs.svg)
-      .attr("class", "chart")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom + titleHeight);
 
@@ -113,15 +110,12 @@ export default {
         tooltip
           .transition()
           .duration(200)
-          .style("opacity", 1)
+          .style("opacity", .95)
           .style("display", "block");
         tooltip
           .html(
             d.oppositions
-              .map(
-                ({ teamId, difficulty }) =>
-                  `${this.teams[teamId]} (${difficulty})`
-              )
+              .map(({ teamId, difficulty }) => `${this.teams[teamId]} (${difficulty})`)
               .join("<br>")
           )
           .style("left", `${e.pageX + 18}px`)
