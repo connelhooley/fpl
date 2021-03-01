@@ -1,11 +1,19 @@
 <template>
-  <header class="flex bg-gray-300 dark:bg-gray-900">
-    <nav class="flex-1">
-      <router-link active-class="" class="inline-block p-4 hover:transition-colors duration-100 ease-in-out hover:bg-gray-200 dark:hover:bg-gray-700" to="/fdr/chart/side-by-side">FDR (Line Chart)</router-link>
-      <router-link active-class="" class="inline-block p-4 hover:transition-colors duration-100 ease-in-out hover:bg-gray-200 dark:hover:bg-gray-700" to="/fdr/table">FDR (Table)</router-link>
+  <header class="flex bg-gray-200 dark:bg-gray-900">
+    <nav class="flex-auto flex">
+      <router-link 
+        v-for="(link, index) in menuLinks"
+        :key="index"
+        :to="link.to"
+        active-class=""
+        class="flex flex-col justify-center inline-block p-4 hover:bg-gray-300 dark:hover:bg-gray-700">
+        <div>
+          {{link.label}}
+        </div>
+      </router-link>
     </nav>
-    <div class="inline-block p-4">
-      <toggle-button v-model="isDark" :css-colors="true" :font-size="12" :height="20" :width="48" :margin="3" :labels="{checked: '🌙', unchecked: '☀️'}" />
+    <div class="flex-none inline-block p-4">
+      <toggle-button v-model="isDark" :css-colors="true" :font-size="15" :height="30" :width="60" :margin="3" :labels="{checked: '🌙', unchecked: '☀️'}" />
     </div>
   </header>
 </template>
@@ -17,6 +25,16 @@ export default {
   data() {
     return {
       isDark: true,
+      menuLinks: [
+        {
+          label: "FDR (Line Chart)",
+          to: "/fdr/chart/side-by-side",
+        },
+        {
+          label: "FDR (Table)",
+          to: "/fdr/table",
+        },
+      ],
     };
   },
   components: {
@@ -45,9 +63,6 @@ export default {
 </script>
 
 <style lang="postcss" scoped>
-/deep/ .v-switch-core {
-  @apply bg-gray-400;
-}
 /deep/ .v-switch-core {
   @apply bg-gray-400;
 }
