@@ -1,4 +1,5 @@
-import "tailwindcss/tailwind.css"
+import "tailwindcss/tailwind.css";
+import 'tippy.js/dist/tippy.css';
 
 import Vue from 'vue';
 import VueRouter from 'vue-router';

@@ -5,7 +5,7 @@
         v-for="(link, index) in menuLinks"
         :key="index"
         :to="link.to"
-        active-class=""
+        active-class="text-blue-500 dark:text-blue-400"
         class="flex flex-col justify-center inline-block p-4 hover:bg-gray-300 dark:hover:bg-gray-700">
         <div>
           {{link.label}}

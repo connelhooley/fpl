@@ -4,6 +4,7 @@
 
 <script>
 import * as d3 from "d3";
+import tippy from "tippy.js";
 
 export default {
   props: {
@@ -25,16 +26,7 @@ export default {
     const width = (this.width ?? 350) - margin.left - margin.right;
     const height = (this.height ?? 170) - margin.top - margin.bottom;
 
-    const tooltip = d3
-      .select("body")
-      .append("div")
-      .attr("class", "tooltip")
-      .style("position", "absolute")
-      .style("display", "block")
-      .style("opacity", 0);
-
-    const svg = d3
-      .select(this.$refs.svg)
+    const svg = d3.select(this.$refs.svg)
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom + titleHeight);
 
@@ -64,8 +56,13 @@ export default {
       .attr("transform", `translate(0, ${height})`)
       .call(d3.axisBottom(x));
 
-    const y = d3.scaleLinear().domain([1, 5]).range([height, 0]);
-    chart.append("g").call(d3.axisLeft(y).ticks(5));
+    const y = d3
+      .scaleLinear()
+      .domain([1, 5])
+      .range([height, 0]);
+    chart
+      .append("g")
+      .call(d3.axisLeft(y).ticks(5));
 
     const line = d3
       .line()
@@ -94,41 +91,29 @@ export default {
       .style("stroke-width", 4)
       .style("fill", "none");
 
+    const vm = this;
     chart
       .selectAll(".circle")
       .data(this.weeks.filter((f) => !isNaN(f.difficulty)))
       .enter()
       .append("circle")
+      .attr("id", (d) => `circle-${this.teamId}-${d.weekId}`)
       .attr("class", "circle")
+      .attr("aria-describedby", (d=> `tooltip-${this.teamId}-${d.weekId}`))
       .attr("cx", (d) => x(d.weekId))
       .attr("cy", (d) => y(d.difficulty))
       .attr("r", (d) => 4 + d.oppositions.length * 2)
       .style("fill", (d) =>
         d3.rgb(this.color).brighter(d.oppositions.length > 1 ? 0.7 : 0)
       )
-      .on("mouseover", (e, d) => {
-        tooltip
-          .transition()
-          .duration(200)
-          .style("opacity", .95)
-          .style("display", "block");
-        tooltip
-          .html(
-            d.oppositions
-              .map(({ teamId, difficulty }) => `${this.teams[teamId]} (${difficulty})`)
-              .join("<br>")
-          )
-          .style("left", `${e.pageX + 18}px`)
-          .style("top", `${e.pageY - 20}px`);
-      })
-      .on("mouseout", () => {
-        tooltip
-          .transition()
-          .duration(500)
-          .style("opacity", 0)
-          .on("end", () => {
-            tooltip.style("display", "none");
-          });
+      .each(function (d) {
+        tippy(this, {
+          theme: "fpl",
+          allowHTML: true,
+          content: d.oppositions
+            .map(({teamId, difficulty}) => `${vm.teams[teamId]} (${difficulty})`)
+            .join("<br>"),
+        });
       });
   },
 };

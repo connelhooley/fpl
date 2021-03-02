@@ -1,5 +1,5 @@
 <template>
-  <div id="fdr-all-teams">
+  <div>
     <fdr-chart
       v-for="team in teamsFdrData"
       :key="team.teamId"
