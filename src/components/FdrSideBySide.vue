@@ -60,7 +60,7 @@ export default {
           return {
             weekId: week.id,
             difficulty: weekFixtures.map((wf) => wf.difficulty).average(),
-            oppositions: weekFixtures.map((wf) => ({ teamId: wf.oppositionId, difficulty: wf.difficulty }))
+            oppositions: weekFixtures.map((wf) => ({teamId: wf.oppositionId, difficulty: wf.difficulty}))
           };
         }),
     }));

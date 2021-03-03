@@ -1,5 +1,5 @@
 <template>
-  <svg ref="svg" class="inline"></svg>
+  <svg ref="svg" class="inline-block m-2 bg-gray-100 dark:bg-gray-700 rounded-lg"></svg>
 </template>
 
 <script>
@@ -36,7 +36,7 @@ export default {
       .append("text")
       .attr("text-anchor", "middle")
       .attr("x", (width + margin.left + margin.right) / 2)
-      .attr("y", titleHeight)
+      .attr("y", titleHeight + 8)
       .style("font-size", 15)
       .text(this.teams[this.teamId]);
 
@@ -104,7 +104,7 @@ export default {
       .attr("cy", (d) => y(d.difficulty))
       .attr("r", (d) => 4 + d.oppositions.length * 2)
       .style("fill", (d) =>
-        d3.rgb(this.color).brighter(d.oppositions.length > 1 ? 0.7 : 0)
+        d3.rgb(this.color).brighter(d.oppositions.length > 1 ? 0.4 : 0)
       )
       .each(function (d) {
         tippy(this, {

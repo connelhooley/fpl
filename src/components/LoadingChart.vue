@@ -1,5 +1,5 @@
 <template>
-  <div class="animate-pulse bg-gray-100 dark:bg-gray-700 border-1 border-gray-300 dark:border-gray-900 rounded-lg dark:text-gray-800 text-gray-200 w-full h-full">
+  <div class="animate-pulse bg-gray-200 text-gray-300 dark:bg-gray-700 dark:text-gray-800 border-1 border-gray-300 dark:border-gray-900 rounded-lg w-full h-full">
     <svg ref="svg"></svg>
   </div>
 </template>
