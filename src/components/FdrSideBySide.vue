@@ -8,22 +8,30 @@
       :weeks="team.weeks"
       :teams="teams"
     />
+    <div v-if="teamsFdrData.length === 0">
+      <div v-for="n in 5" :key="n" class="inline-block w-1/3 h-44 p-2">
+        <loading-chart />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import * as d3 from "d3";
 import FdrChart from "./FdrSideBySideChart";
+import LoadingChart from './LoadingChart.vue';
 
 export default {
   data() {
     return {
+      loaded: false,
       teamsFdrData: [],
       teams: {},
     };
   },
   components: {
     FdrChart,
+    LoadingChart,
   },
   async mounted() {
     const [staticData, fixtures] = await Promise.all([window.electron.invoke("static-api"), window.electron.invoke("fixture-api")]);
