@@ -9,11 +9,17 @@ module.exports = {
 			white: colors.white, 
       gray: colors.gray,
       blue: colors.blue,
+      green: colors.green,
+      yellow: colors.amber,
+      red: colors.red,
     },
     extend: {},
   },
   variants: {
-    extend: {},
+    extend: {
+      borderWidth: ['last'],
+      borderRadius: ['last'],
+    },
   },
   plugins: [],
 }

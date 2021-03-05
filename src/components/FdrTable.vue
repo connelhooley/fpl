@@ -1,46 +1,57 @@
 <template>
-  <table v-if="fdr.length" class="
-    block
-    overflow-x-auto
-    w-full
-    m-3
+  <div v-if="fdr.length" class="
     bg-gray-200
     dark:bg-gray-700
-    rounded-lg"
+    rounded-l-lg"
   >
-    <tbody class="table table-fixed w-full">
-      <tr>
-        <td class="w-48"></td>
-        <td v-for="(weekId, weekName) in futureWeeks" :key="weekId" class="
+    <div class="flex flex-row">
+      <div class="flex flex-col pt-14">
+        <div v-for="(teamName, teamId) in teams" :key="teamId" class="
           w-40
           font-bold
-          text-center
-          p-4"
-        >
-          {{weekName}}
-        </td>
-      </tr>
-      <tr v-for="team in fdr" :key="team.teamId">
-        <td class="
-
-          font-bold
           text-right
+          border-l
+          border-t
+          last:border-r
+          border-gray-200
+          dark:border-gray-700
           p-4"
         >
-          {{team.teamName}}
-        </td>
-        <fdr-table-cell
-          v-for="week in team.weeks"
-          :key="week.weekId"
-          :color="color(week.difficulty)"
-          :difficulty="week.difficulty"
-          :oppositions="week.oppositions"
-          class="
+          {{teamName}}
+        </div>
+      </div>
+      <div class="flex flex-col flex-auto overflow-x-auto">
+        <div class="flex flex-row">
+          <div v-for="(_, weekId) in futureWeeks" :key="weekId" class="
+            flex-none
+            w-40
+            h-14
+            font-bold
+            text-center
+            border-l
+            border-t
+            last:border-r
+            border-gray-200
+            dark:border-gray-700
             p-4"
-        />
-      </tr>
-    </tbody>
-  </table>
+          >
+            {{weekId}}
+          </div>
+        </div>
+        <div v-for="team in fdr" :key="team.teamId" class="
+          flex
+          flex-row"
+        >
+          <fdr-table-cell
+            v-for="week in team.weeks"
+            :key="week.weekId"
+            :difficulty="week.difficulty"
+            :oppositions="week.oppositions"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
   <div v-else>
     <fdr-loading-chart v-for="n in 5" :key="n" />
   </div>
@@ -49,7 +60,6 @@
 <script>
 import { mapGetters } from "vuex";
 
-import * as d3 from "d3";
 import FdrTableCell from "./FdrTableCell";
 import FdrLoadingChart from "./FdrSideBySideLoadingChart";
 
@@ -59,18 +69,6 @@ export default {
     FdrLoadingChart,
   },
   computed: {
-    color() {
-      const color = d3.scaleLinear()
-        .domain([1, 5])
-        .range(["green", "red"]);
-      return (difficulty) => {
-        if (isNaN(difficulty)) {
-          return "none";
-        } else {
-          return color(difficulty);
-        }
-      };
-    },
     ...mapGetters(["teams", "futureWeeks", "fdr"]),
   },
 };
