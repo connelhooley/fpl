@@ -1,7 +1,24 @@
 <template>
-  <div class="animate-pulse bg-gray-200 text-gray-300 dark:bg-gray-700 dark:text-gray-800 border-1 border-gray-300 dark:border-gray-900 rounded-lg w-full h-full">
+<div class="
+  inline-block
+  m-3"
+>
+  <div class="
+    animate-pulse
+    rounded-lg
+    bg-gray-200
+    text-gray-300
+    dark:bg-gray-700
+    dark:text-gray-800
+    border-1
+    border-gray-300
+    dark:border-gray-900
+    w-full
+    h-full"
+  >
     <svg ref="svg"></svg>
   </div>
+</div>  
 </template>
 
 <script>
@@ -28,10 +45,7 @@ export default {
 
     const chart = svg
       .append("g")
-      .attr(
-        "transform",
-        `translate(${margin.left}, ${margin.top})`
-      );
+      .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
     const x = d3
       .scaleLinear()

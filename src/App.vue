@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 import TheHeader from "./components/TheHeader";
 import TheContent from "./components/TheContent";
 
@@ -15,20 +16,24 @@ export default {
     TheHeader,
     TheContent,
   },
+  created() {
+    this.getStatic();
+  },
+  methods: {
+    ...mapActions([
+      "getStatic",
+    ]),
+  },
 };
 </script>
 
 <style lang="postcss">
 body {
-  @apply bg-white dark:bg-gray-800 text-black dark:text-white;
-}
-
-text {
-  @apply fill-current text-black dark:text-white;
+  @apply bg-white text-black dark:text-white dark:bg-gray-800;
 }
 
 .tippy-box {
-  @apply text-white dark:text-gray-900 bg-black dark:bg-white rounded-md p-1.5;
+  @apply bg-black text-white dark:bg-white dark:text-black;
 }
 
 .tippy-box[data-placement^='top'] > .tippy-arrow::before {

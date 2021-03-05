@@ -27,12 +27,8 @@ export default {
       isDark: true,
       menuLinks: [
         {
-          label: "FDR (Line Chart)",
-          to: "/fdr/chart/side-by-side",
-        },
-        {
-          label: "FDR (Table)",
-          to: "/fdr/table",
+          label: "FDR",
+          to: "/fdr/",
         },
       ],
     };
