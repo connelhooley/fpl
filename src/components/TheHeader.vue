@@ -30,6 +30,10 @@ export default {
           label: "FDR",
           to: "/fdr/",
         },
+        {
+          label: "Players",
+          to: "/players/",
+        },
       ],
     };
   },

@@ -92,3 +92,8 @@ ipcMain.handle("static-api", async () => {
   const res = await fetch("https://fantasy.premierleague.com/api/bootstrap-static/")
   return await res.json()
 })
+
+ipcMain.handle("element-summary-api", async (_, playerId) => {
+  const res = await fetch(`https://fantasy.premierleague.com/api/element-summary/${playerId}/`);
+  return await res.json()
+})

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="fdr.length">
-      <fdr-chart
+      <chart
         v-for="team in fdr"
         :key="team.teamId"
         :team="team.teamName"
@@ -10,7 +10,7 @@
       />
     </div>
     <div v-else>
-      <fdr-loading-chart v-for="n in 5" :key="n" />
+      <loading-chart v-for="n in 5" :key="n" />
     </div>
   </div>
 </template>
@@ -19,13 +19,13 @@
 import * as d3 from "d3";
 import { mapGetters } from "vuex";
 
-import FdrChart from "./FdrSideBySideChart";
-import FdrLoadingChart from "./FdrSideBySideLoadingChart";
+import Chart from "./FdrChartsChart";
+import LoadingChart from "./FdrChartsLoadingChart";
 
 export default {
   components: {
-    FdrChart,
-    FdrLoadingChart,
+    Chart,
+    LoadingChart,
   },
   computed: {
     color() {
@@ -33,7 +33,7 @@ export default {
         .domain(Object.keys(this.teams || {}))
         .range(d3.schemeSet2);
     },
-    ...mapGetters(["teams", "fdr"]),
+    ...mapGetters("fixtures", ["fdr"]),
   },
 };
 </script>

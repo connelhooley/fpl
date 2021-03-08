@@ -6,46 +6,41 @@
   >
     <div class="flex flex-row">
       <div class="flex flex-col pt-14">
-        <div v-for="(teamName, teamId) in teams" :key="teamId" class="
+        <div v-for="team in teams" :key="team.teamId" class="
           w-40
           font-bold
           text-right
-          border-l
-          border-t
-          last:border-r
+          border
           border-gray-200
           dark:border-gray-700
           p-4"
         >
-          {{teamName}}
+          {{team.teamName}}
         </div>
       </div>
       <div class="flex flex-col flex-auto overflow-x-auto">
         <div class="flex flex-row">
-          <div v-for="(_, weekId) in futureWeeks" :key="weekId" class="
+          <div v-for="week in futureWeeks" :key="week.weekNumber" class="
             flex-none
-            w-40
+            w-56
             h-14
             font-bold
             text-center
-            border-l
-            border-t
-            last:border-r
+            border
             border-gray-200
             dark:border-gray-700
             p-4"
           >
-            {{weekId}}
+            {{week.weekNumber}}
           </div>
         </div>
         <div v-for="team in fdr" :key="team.teamId" class="
           flex
           flex-row"
         >
-          <fdr-table-cell
+          <table-cell
             v-for="week in team.weeks"
-            :key="week.weekId"
-            :difficulty="week.difficulty"
+            :key="week.weekNumber"
             :oppositions="week.oppositions"
           />
         </div>
@@ -53,23 +48,25 @@
     </div>
   </div>
   <div v-else>
-    <fdr-loading-chart v-for="n in 5" :key="n" />
+    <loading-table />
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 
-import FdrTableCell from "./FdrTableCell";
-import FdrLoadingChart from "./FdrSideBySideLoadingChart";
+import TableCell from "./FdrTableCell";
+import LoadingTable from "./FdrTableLoading";
 
 export default {
   components: {
-    FdrTableCell,
-    FdrLoadingChart,
+    TableCell,
+    LoadingTable,
   },
   computed: {
-    ...mapGetters(["teams", "futureWeeks", "fdr"]),
+    ...mapState(["teams"]),
+    ...mapGetters(["futureWeeks"]),
+    ...mapGetters("fixtures", ["fdr"]),
   },
 };
 </script>

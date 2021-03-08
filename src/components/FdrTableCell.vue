@@ -1,46 +1,41 @@
 <template>
   <div
-    ref="cell"
-    :class="classes"
     class="
       flex-none
-      w-40
+      flex
+      flex-row
+      w-56
       uppercase
-      p-4
-      text-white
-      border-t
-      border-l
-      last:border-r
-      border-black"
+      text-white"
     >
-      {{content}}
+      <div v-if="!oppositions.length" class="p-4 flex-1 bg-gray-800 border border-black truncate">
+        Blank
+      </div>
+      <div v-for="opposition in oppositions" :key="opposition.oppositionId" :class="getDifficultyColorClass(opposition.difficulty)" class="p-4 flex-1 border border-black truncate">
+        {{opposition.teamShortName}} ({{opposition.difficulty}})
+      </div>
   </div>
 </template>
 
 <script>
 export default {
   props: {
-    // color: String,
-    difficulty: Number,
     oppositions: Array,
   },
-  computed: {
-    classes() {
-      return {
-        "bg-gray-800": this.isBlank,
-        "bg-red-900": Math.round(this.difficulty) === 5,
-        "bg-red-600": Math.round(this.difficulty) === 4,
-        "bg-yellow-500": Math.round(this.difficulty) === 3,
-        "bg-green-700": Math.round(this.difficulty) === 2,
-        "bg-green-500": Math.round(this.difficulty) === 1,
-      };
-    },
-    isBlank() {
-      return isNaN(this.difficulty) || !this.oppositions.length;
-    },  
-    content() {
-      if (this.isBlank) return "Blank";
-      return this.oppositions.map(({teamShortName, difficulty}) => `${teamShortName} (${difficulty})`).join(", ");
+  methods: {
+    getDifficultyColorClass(difficulty) {
+      switch (difficulty) {
+        case 5:
+          return "bg-red-900";
+        case 4:
+          return "bg-red-600";
+        case 3:
+          return "bg-yellow-500";
+        case 2:
+          return "bg-green-700";
+        case 1:
+          return "bg-green-500";
+      }
     },
   },
 };

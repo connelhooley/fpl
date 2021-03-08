@@ -1,7 +1,8 @@
 <template>
   <svg ref="svg" class="
     inline-block
-    m-3 bg-gray-100
+    m-3
+    bg-gray-100
     dark:bg-gray-700
     rounded-lg"
   ></svg>

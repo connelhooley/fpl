@@ -17,12 +17,10 @@ export default {
     TheContent,
   },
   created() {
-    this.getStatic();
+    this.fetchStatic();
   },
   methods: {
-    ...mapActions([
-      "getStatic",
-    ]),
+    ...mapActions(["fetchStatic"]),
   },
 };
 </script>
