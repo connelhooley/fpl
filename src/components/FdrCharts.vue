@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div v-if="fdr.length">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <template v-if="fdr.length">
       <chart
         v-for="team in fdr"
         :key="team.teamId"
@@ -8,10 +8,10 @@
         :weeks="team.weeks.slice(0, 14)"
         :color="color(team.teamId)"
       />
-    </div>
-    <div v-else>
+    </template>
+    <template v-else>
       <loading-chart v-for="n in 5" :key="n" />
-    </div>
+    </template>
   </div>
 </template>
 

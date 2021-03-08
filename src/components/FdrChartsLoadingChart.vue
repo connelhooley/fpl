@@ -1,47 +1,43 @@
 <template>
-<div class="
-  inline-block
-  m-3"
->
   <div class="
+    p-4
     animate-pulse
-    rounded-lg
     bg-gray-200
     text-gray-300
     dark:bg-gray-700
     dark:text-gray-800
-    border-1
-    border-gray-300
-    dark:border-gray-900
-    w-full
-    h-full"
+    rounded-lg"
   >
-    <svg ref="svg"></svg>
+    <svg 
+      ref="svg"
+      class="
+        block
+        w-full"
+    ></svg>  
   </div>
-</div>  
 </template>
 
 <script>
 import * as d3 from "d3";
 
 export default {
-  props: {
-    width: Number,
-    height: Number,
-  },
   mounted() {
-    const margin = {
-      top: 30,
-      right: 30,
-      bottom: 30,
-      left: 30,
-    };
-    const width = (this.width ?? 350) - margin.left - margin.right;
-    const height = (this.height ?? 170) - margin.top - margin.bottom;
+    const svg = d3.select(this.$refs.svg);
 
-    const svg = d3.select(this.$refs.svg)
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom);
+    const margin = {
+      top: 10,
+      right: 10,
+      bottom: 10,
+      left: 10,
+    };
+    const svgWidth = 400;
+    const svgHeight = 150;
+    const chartWidth = svgWidth - margin.left - margin.right;
+    const chartHeight = svgHeight - margin.top - margin.bottom;
+
+    svg
+      .attr("viewBox", [0, 0, svgWidth, svgHeight])
+      .attr("preserveAspectRatio", "xMinYMin meet");
 
     const chart = svg
       .append("g")
@@ -50,16 +46,16 @@ export default {
     const x = d3
       .scaleLinear()
       .domain([1,10])
-      .range([0, width]);
+      .range([0, chartWidth]);
     chart
       .append("g")
-      .attr("transform", `translate(0, ${height})`)
+      .attr("transform", `translate(0, ${chartHeight})`)
       .call(d3.axisBottom(x).ticks(10).tickFormat(""));
 
     const y = d3
       .scaleLinear()
       .domain([1, 5])
-      .range([height, 0]);
+      .range([chartHeight, 0]);
     chart
       .append("g")
       .call(d3.axisLeft(y).ticks(5).tickFormat(""));

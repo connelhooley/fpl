@@ -1,11 +1,22 @@
 <template>
-  <svg ref="svg" class="
-    inline-block
-    m-3
-    bg-gray-100
+  <div class="
+    bg-gray-200
     dark:bg-gray-700
     rounded-lg"
-  ></svg>
+  >
+    <div class="
+      p-3
+      text-center"
+    >
+      {{team}}
+    </div>
+    <svg 
+      ref="svg"
+      class="
+        block
+        w-full"
+    ></svg>  
+  </div>
 </template>
 
 <script>
@@ -14,8 +25,6 @@ import tippy from "tippy.js";
 
 export default {
   props: {
-    width: Number,
-    height: Number,
     team: String,
     color: String,
     weeks: Array,
@@ -46,46 +55,39 @@ export default {
       const svg = d3.select(this.$refs.svg);
       svg.selectAll("*").remove();
 
-      const titleHeight = 20;
       const margin = {
-        top: 30,
-        right: 30,
-        bottom: 30,
-        left: 30,
+        top: 10,
+        right: 40,
+        bottom: 40,
+        left: 40,
       };
-      const width = (this.width ?? 350) - margin.left - margin.right;
-      const height = (this.height ?? 170) - margin.top - margin.bottom;
+      const svgWidth = 400;
+      const svgHeight = 150;
+      const chartWidth = svgWidth - margin.left - margin.right;
+      const chartHeight = svgHeight - margin.top - margin.bottom;
 
       svg
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom + titleHeight)
-        .append("g")
-        .attr("width", width + margin.left + margin.right)
-        .append("text")
-        .attr("text-anchor", "middle")
-        .attr("x", (width + margin.left + margin.right) / 2)
-        .attr("y", titleHeight + 8)
-        .style("font-size", 15)
-        .style("fill", "currentColor")
-        .text(this.team);
+        .attr("viewBox", [0, 0, svgWidth, svgHeight])
+        .attr("preserveAspectRatio", "xMinYMin meet");
+
 
       const chart = svg
         .append("g")
-        .attr("transform", `translate(${margin.left}, ${margin.top + titleHeight})`);
+        .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
       const x = d3
         .scalePoint()
         .domain(this.weeks.map((f) => f.weekNumber))
-        .range([0, width]);
+        .range([0, chartWidth]);
       chart
         .append("g")
-        .attr("transform", `translate(0, ${height})`)
+        .attr("transform", `translate(0, ${chartHeight})`)
         .call(d3.axisBottom(x));
 
       const y = d3
         .scaleLinear()
         .domain([1, 5])
-        .range([height, 0]);
+        .range([chartHeight, 0]);
       chart
         .append("g")
         .call(d3.axisLeft(y).ticks(5));
