@@ -78,7 +78,7 @@ export default {
       chart
         .append("path")
         .datum(this.history)
-        .attr("class", "line text-blue-800 dark:text-blue-300")
+        .attr("class", "line text-blue-500 dark:text-blue-300")
         .attr("d", (d) => line(d))
         .attr("stroke", "currentColor")
         .style("stroke-width", 4)
@@ -89,7 +89,7 @@ export default {
         .data(this.history)
         .enter()
         .append("circle")
-        .attr("class", "circle text-blue-800 dark:text-blue-300")
+        .attr("class", "circle text-blue-500 dark:text-blue-300")
         .attr("cx", (d) => x(d.weekNumber))
         .attr("cy", (d) => y(d.totalPoints))
         .attr("r", 6)
