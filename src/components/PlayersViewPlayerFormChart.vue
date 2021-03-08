@@ -1,8 +1,8 @@
 <template>
   <svg ref="svg" class="
-    inline-block
     bg-gray-100
     dark:bg-gray-700
+    block
     rounded-lg"
   ></svg>
 </template>
@@ -37,17 +37,19 @@ export default {
       svg.selectAll("*").remove();
 
       const margin = {
-        top: 30,
-        right: 30,
-        bottom: 30,
-        left: 30,
+        top: 40,
+        right: 40,
+        bottom: 40,
+        left: 40,
       };
-      const width = (this.width ?? 1000) - margin.left - margin.right;
-      const height = (this.height ?? 300) - margin.top - margin.bottom;
+      const svgWidth = 1200;
+      const svgHeight = 300;
+      const chartWidth = svgWidth - margin.left - margin.right;
+      const chartHeight = svgHeight - margin.top - margin.bottom;
 
       svg
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom);
+        .attr("viewBox", [0, 0, svgWidth, svgHeight])
+        .attr("preserveAspectRatio", "xMinYMin meet");
 
       const chart = svg
         .append("g")
@@ -56,19 +58,37 @@ export default {
       const x = d3
         .scalePoint()
         .domain(this.history.map((h) => h.weekNumber))
-        .range([0, width]);
+        .range([0, chartWidth]);
       chart
         .append("g")
-        .attr("transform", `translate(0, ${height})`)
+        .attr("transform", `translate(0, ${chartHeight})`)
         .call(d3.axisBottom(x));
 
       const y = d3
         .scaleLinear()
         .domain(d3.extent(this.history.map((h) => h.totalPoints)))
-        .range([height, 0]);
+        .range([chartHeight, 0]);
       chart
         .append("g")
         .call(d3.axisLeft(y));
+
+      const minY = d3.min(this.history.map((h) => h.totalPoints));
+
+      if (minY < 0) {
+        const [minX, maxX] = d3.extent(this.history.map((h) => h.weekNumber));
+        console.dir([minX, maxX]);
+        chart
+          .append("line") 
+          .attr("x1", x(minX))
+          .attr("y1", y(0))
+          .attr("x2", x(maxX))
+          .attr("y2", y(0))
+          .attr("class", "text-gray-400 dark:text-gray-500")
+          .attr("stroke", "currentColor")
+          .style("stroke-width", 1)
+          .style("stroke-dasharray", 4)
+          .style("fill", "none");
+      }
 
       const line = d3
         .line()
@@ -81,7 +101,7 @@ export default {
         .attr("class", "line text-blue-500 dark:text-blue-300")
         .attr("d", (d) => line(d))
         .attr("stroke", "currentColor")
-        .style("stroke-width", 4)
+        .style("stroke-width", 3)
         .style("fill", "none");
 
       chart
