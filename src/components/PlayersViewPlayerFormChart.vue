@@ -76,13 +76,12 @@ export default {
 
       if (minY < 0) {
         const [minX, maxX] = d3.extent(this.history.map((h) => h.weekNumber));
-        console.dir([minX, maxX]);
         chart
           .append("line") 
           .attr("x1", x(minX))
-          .attr("y1", y(0))
+          .attr("y1", y(0)+1)
           .attr("x2", x(maxX))
-          .attr("y2", y(0))
+          .attr("y2", y(0)+1)
           .attr("class", "text-gray-400 dark:text-gray-500")
           .attr("stroke", "currentColor")
           .style("stroke-width", 1)
@@ -112,13 +111,62 @@ export default {
         .attr("class", "circle text-blue-500 dark:text-blue-300")
         .attr("cx", (d) => x(d.weekNumber))
         .attr("cy", (d) => y(d.totalPoints))
-        .attr("r", 6)
+        .attr("r", 8)
+        .style("fill", "currentColor");
+
+      chart
+        .selectAll(".circleLabel")
+        .data(this.history)
+        .enter()
+        .append("text")
+        .attr("class", "invisible md:visible text-white dark:text-black circleLabel font-mono")
         .style("fill", "currentColor")
-        .each(function () {
+        .attr("text-anchor", "middle")
+        .text((d) => d.totalPoints)
+        .attr("font-size", 10)
+        .attr("dx", (d) => x(d.weekNumber))
+        .attr("dy", (d) => y(d.totalPoints)+2);
+
+      chart
+        .selectAll(".tooltipTarget")
+        .data(this.history)
+        .enter()
+        .append("circle")
+        .attr("class", "tooltipTarget")
+        .attr("cx", (d) => x(d.weekNumber))
+        .attr("cy", (d) => y(d.totalPoints))
+        .attr("r", 8)
+        .style("fill-opacity", 0)
+        .each(function(d) {
+          const appendRow = (label, value) => {
+            if (value) {
+              return `<tr><td>${label}:</td><td>${value}</td></tr>`
+            } else {
+              return "";
+            }
+          };
+
+          let content = `<div class="font-bold">Vs. ${d.oppositionName}</div>`;
+          content += `<table>`;
+          content += appendRow("Points", d.totalPoints);
+          content += appendRow("Minutes", d.minutesPlayed);
+          content += appendRow("Bonus", d.bonusPoints);
+          content += appendRow("Goals", d.goals);
+          content += appendRow("Assists", d.assists);
+          content += appendRow("Clean Sheets", d.cleanSheets);
+          content += appendRow("Conceded", d.conceded);
+          content += appendRow("Saves", d.saves);
+          content += appendRow("Pens. Saved", d.penaltiesSaved);
+          content += appendRow("Pens. Missed", d.penaltiesMissed);
+          content += appendRow("Yellows", d.yellows);
+          content += appendRow("Reds", d.reds);
+          content += appendRow("OGs", d.ownGoals);
+          content += `</table>`;
+
           tippy(this, {
             theme: "fpl",
             allowHTML: true,
-            content: "todo",
+            content,
           });
         });
     },
