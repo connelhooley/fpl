@@ -58,7 +58,7 @@ export default {
       const margin = {
         top: 10,
         right: 40,
-        bottom: 40,
+        bottom: 50,
         left: 40,
       };
       const svgWidth = 400;
@@ -83,6 +83,27 @@ export default {
         .append("g")
         .attr("transform", `translate(0, ${chartHeight})`)
         .call(d3.axisBottom(x));
+      
+      chart
+        .append("text")
+        .attr("y", -(margin.left/2))
+        .attr("x", -(chartHeight/2))
+        .attr("transform", "rotate(270)")
+        .attr("text-anchor", "middle")
+        .attr("class", "text-gray-400")
+        .style("fill", "currentColor")
+        .attr("font-size", 10)
+        .text("FDR");
+
+      chart
+        .append("text")
+        .attr("dx", chartWidth/2)
+        .attr("dy", svgHeight - (margin.bottom/2))
+        .attr("text-anchor", "middle")
+        .attr("class", "text-gray-400")
+        .style("fill", "currentColor")
+        .attr("font-size", 10)
+        .text("GW");
 
       const y = d3
         .scaleLinear()

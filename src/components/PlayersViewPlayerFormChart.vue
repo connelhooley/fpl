@@ -39,7 +39,7 @@ export default {
       const margin = {
         top: 40,
         right: 40,
-        bottom: 40,
+        bottom: 50,
         left: 40,
       };
       const svgWidth = 1200;
@@ -70,7 +70,28 @@ export default {
         .range([chartHeight, 0]);
       chart
         .append("g")
-        .call(d3.axisLeft(y));
+        .call(d3.axisLeft(y));      
+      
+      chart
+        .append("text")
+        .attr("y", -(margin.left/2))
+        .attr("x", -(chartHeight/2))
+        .attr("transform", "rotate(270)")
+        .attr("text-anchor", "middle")
+        .attr("class", "text-gray-400")
+        .style("fill", "currentColor")
+        .attr("font-size", 10)
+        .text("Total Points");
+
+      chart
+        .append("text")
+        .attr("dx", chartWidth/2)
+        .attr("dy", svgHeight - (margin.bottom))
+        .attr("text-anchor", "middle")
+        .attr("class", "text-gray-400")
+        .style("fill", "currentColor")
+        .attr("font-size", 10)
+        .text("GW");
 
       const minY = d3.min(this.history.map((h) => h.totalPoints));
 
@@ -138,18 +159,18 @@ export default {
         .attr("r", 8)
         .style("fill-opacity", 0)
         .each(function(d) {
-          const appendRow = (label, value) => {
-            if (value) {
-              return `<tr><td>${label}:</td><td>${value}</td></tr>`
+          const appendRow = (label, value, always) => {
+            if (always || value) {
+              return `<tr class="bg-gray-900 even:bg-gray-800 dark:bg-gray-100 dark:even:bg-gray-200"><td class="p-1">${label}:</td><td class="p-1">${value}</td></tr>`
             } else {
               return "";
             }
           };
 
-          let content = `<div class="font-bold">Vs. ${d.oppositionName}</div>`;
-          content += `<table>`;
-          content += appendRow("Points", d.totalPoints);
-          content += appendRow("Minutes", d.minutesPlayed);
+          let content = `<div class="font-bold mb-1">Vs. ${d.oppositionName}</div>`;
+          content += `<table class="border-collapse text-xs w-full">`;
+          content += appendRow("Points", d.totalPoints, true);
+          content += appendRow("Minutes", d.minutesPlayed, true);
           content += appendRow("Bonus", d.bonusPoints);
           content += appendRow("Goals", d.goals);
           content += appendRow("Assists", d.assists);
