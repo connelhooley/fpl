@@ -41,7 +41,7 @@ export default {
       }));
     },
     currentPlayer(state, _getters, rootState) {
-      if (!state.isCurrentPlayerHistoryDataLoaded) {
+      if (!rootState.isStaticDataLoaded || !state.isCurrentPlayerHistoryDataLoaded) {
         return [];
       }
 
