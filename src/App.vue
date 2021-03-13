@@ -1,23 +1,38 @@
 <template>
   <div id="app">
     <the-header />
-    <the-content />
+    <the-modal :isOpen="!!searchTerm">
+      <template #default>
+        <the-content />
+      </template>
+      <template #modal>
+        <the-search-results />
+      </template>
+    </the-modal>
   </div>
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 import TheHeader from "./components/TheHeader";
 import TheContent from "./components/TheContent";
+import TheModal from "./components/TheModal";
+import TheSearchResults from "./components/TheSearchResults";
 
 export default {
   name: "App",
   components: {
     TheHeader,
+    TheModal,
     TheContent,
+    TheSearchResults,
   },
   created() {
     this.fetchStatic();
+  },
+  computed: {
+    ...mapState("search", ["searchTerm"]),
+    ...mapGetters("search", ["searchResults"]),
   },
   methods: {
     ...mapActions(["fetchStatic"]),
