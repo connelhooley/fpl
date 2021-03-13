@@ -66,13 +66,13 @@ export default {
       svg.selectAll("*").remove();
 
       const margin = {
-        top: 30,
+        top: 40,
         right: 50,
-        bottom: 30,
+        bottom: 40,
         left: 50,
       };
       const svgWidth = 600;
-      const svgHeight = 300;
+      const svgHeight = 250;
       const chartHeight = svgHeight - margin.top - margin.bottom;
       const barWidth = 60;
 
@@ -162,15 +162,15 @@ export default {
         .text("Points Earned");
 
       chart
-        .selectAll(".rectangle")
-        .data(data.filter(d => d.total !== 0).map(d => d.total))
+        .selectAll(".bar")
+        .data(data.filter(d => d.total !== 0))
         .enter()
         .append("rect")
-        .attr("class", "rectangle")
+        .attr("class", "bar")
         .attr("stroke", "currentColor")
         .attr("x", (_, i) => i * barWidth + 3)
-        .attr("y", (d) => y(Math.max(0, d)))
-        .attr("height", (d) => Math.abs(y(0) - y(d)))
+        .attr("y", (d) => y(Math.max(0, d.total)))
+        .attr("height", (d) => Math.abs(y(0) - y(d.total)))
         .attr("width", barWidth)
         .style("stroke-width", 1)
         .style("opacity", 1)
@@ -181,12 +181,37 @@ export default {
         .data(data.filter(d => d.total !== 0))
         .enter()
         .append("text")
+        .attr("class", "label")
         .attr("x", (_, i) => i * (barWidth) + (barWidth/2) + 3)
         .attr("y", (d) => y(Math.max(0, d.total))-6)
         .attr("text-anchor", "middle")
         .style("fill", "currentColor")
         .attr("font-size", 10)
         .text((d) => d.label);
+
+      chart
+        .selectAll(".totalCircle")
+        .data(data.filter(d => d.total !== 0))
+        .enter()
+        .append("circle")
+        .attr("class", "totalCircle text-gray-200 dark:text-black")
+        .attr("cx", (_, i) => i * (barWidth) + (barWidth/2) + 3)
+        .attr("cy", (d) => y(Math.max(0, d.total))-25)
+        .style("fill", "currentColor")
+        .attr("r", 8);
+
+      chart
+        .selectAll(".totalLabel")
+        .data(data.filter(d => d.total !== 0))
+        .enter()
+        .append("text")
+        .attr("class", "totalLabel text-black dark:text-white font-mono")
+        .attr("x", (_, i) => i * (barWidth) + (barWidth/2) + 3)
+        .attr("y", (d) => y(Math.max(0, d.total))-22)
+        .attr("text-anchor", "middle")
+        .style("fill", "currentColor")
+        .attr("font-size", 10)
+        .text((d) => d.total);
     },
   },
 };
