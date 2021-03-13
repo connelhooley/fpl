@@ -1,10 +1,21 @@
 <template>
-  <svg ref="svg" class="
+  <div class="
     bg-gray-100
     dark:bg-gray-700
     block
     rounded-lg"
-  ></svg>
+  >
+    <div class="
+      p-3
+      text-center"
+    >
+      Form
+    </div>
+    <svg ref="svg" class="
+      block
+      w-full"
+    ></svg>
+  </div>
 </template>
 
 <script>
@@ -38,9 +49,9 @@ export default {
 
       const margin = {
         top: 40,
-        right: 40,
+        right: 50,
         bottom: 50,
-        left: 40,
+        left: 50,
       };
       const svgWidth = 1200;
       const svgHeight = 300;
@@ -70,11 +81,11 @@ export default {
         .range([chartHeight, 0]);
       chart
         .append("g")
-        .call(d3.axisLeft(y));      
+        .call(d3.axisLeft(y));
       
       chart
         .append("text")
-        .attr("y", -(margin.left/2))
+        .attr("y", -((margin.left/2)+5))
         .attr("x", -(chartHeight/2))
         .attr("transform", "rotate(270)")
         .attr("text-anchor", "middle")

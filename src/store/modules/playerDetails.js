@@ -1,3 +1,5 @@
+import {calcPoints} from "../../fplPointsRules";
+
 export default {
   namespaced: true,
   state: {
@@ -54,6 +56,7 @@ export default {
         history: state.currentPlayerHistory.map((history) => ({
           ...history,
           oppositionName: rootState.teams.find((team) => team.teamId === history.oppositionId).teamName,
+          points: calcPoints(history, position),
         })),
       };
     },
