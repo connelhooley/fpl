@@ -36,9 +36,9 @@ export default {
             .map((player) => ({
               playerId: player.playerId,
               playerName: player.playerName,
-              totalPoints: player.totalPoints,
+              playerTotalPoints: player.playerTotalPoints,
             }))
-            .sort((a,b) => b.totalPoints - a.totalPoints),
+            .sort((a,b) => b.playerTotalPoints - a.playerTotalPoints),
         })),
       }));
     },
@@ -53,11 +53,14 @@ export default {
       return {
         ...player,
         ...position,
-        history: state.currentPlayerHistory.map((history) => ({
-          ...history,
-          oppositionName: rootState.teams.find((team) => team.teamId === history.oppositionId).teamName,
-          points: calcPoints(history, position),
-        })),
+        history: state.currentPlayerHistory
+          .map((history) => ({
+            ...history,
+            ...rootState.weeks.find((week) => week.weekNumber === history.weekNumber),
+            oppositionName: rootState.teams.find((team) => team.teamId === history.oppositionId).teamName,
+            points: calcPoints(history, position),
+          }))
+          .filter((history) => history.weekIsFinished),
       };
     },
   },

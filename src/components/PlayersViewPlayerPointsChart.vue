@@ -20,8 +20,6 @@
 </template>
 
 <script>
-/* eslint-disable */
-
 import * as d3 from "d3";
 
 export default {
@@ -125,10 +123,10 @@ export default {
           label: "Saves",
           total: d3.sum(this.history, d => d.points.saves),
         },
-      ];
+      ].filter(d => d.total !== 0);
 
       const color = d3.scaleOrdinal()
-        .domain(data.filter(d => d.total !== 0).map(d => d.label))
+        .domain(data.map(d => d.label))
         .range(d3.schemeSet2);
 
       svg
@@ -163,7 +161,7 @@ export default {
 
       chart
         .selectAll(".bar")
-        .data(data.filter(d => d.total !== 0))
+        .data(data)
         .enter()
         .append("rect")
         .attr("class", "bar")
@@ -178,7 +176,7 @@ export default {
 
       chart
         .selectAll(".label")
-        .data(data.filter(d => d.total !== 0))
+        .data(data)
         .enter()
         .append("text")
         .attr("class", "label")
@@ -191,7 +189,7 @@ export default {
 
       chart
         .selectAll(".totalCircle")
-        .data(data.filter(d => d.total !== 0))
+        .data(data)
         .enter()
         .append("circle")
         .attr("class", "totalCircle text-gray-200 dark:text-black")
@@ -202,7 +200,7 @@ export default {
 
       chart
         .selectAll(".totalLabel")
-        .data(data.filter(d => d.total !== 0))
+        .data(data)
         .enter()
         .append("text")
         .attr("class", "totalLabel text-black dark:text-white font-mono")

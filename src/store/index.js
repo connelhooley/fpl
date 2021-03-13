@@ -32,13 +32,13 @@ export default new Vuex.Store({
   },
   getters: {
     futureWeeks(state) {
-      return state.weeks.filter((week) => !week.isFinished && !week.isCurrent);
+      return state.weeks.filter((week) => !week.weekIsFinished && !week.weekIsCurrent);
     },
     completedWeeks(state) {
-      return state.weeks.filter((week) => week.isFinished);
+      return state.weeks.filter((week) => week.weekIsFinished);
     },
     currentWeek(state) {
-      return state.weeks.find((week) => week.isCurrent);
+      return state.weeks.find((week) => week.weekIsCurrent);
     },
   },
   actions: {
@@ -54,8 +54,8 @@ export default new Vuex.Store({
       const weeks = data.events.map((week) => ({
         weekNumber: week.id,
         weekName: week.name,
-        isCurrent: week.is_current,
-        isFinished: week.finished,
+        weekIsCurrent: week.is_current,
+        weekIsFinished: week.finished,
       }));
       weeks.sort((a, b) => a.weekNumber - b.weekNumber);
 
@@ -64,7 +64,7 @@ export default new Vuex.Store({
         .map((element) => ({
           playerId: element.id,
           playerName: element.web_name,
-          totalPoints: element.total_points,
+          playerTotalPoints: element.total_points,
           teamId: element.team,
           positionId: element.element_type,
         }));

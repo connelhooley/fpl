@@ -68,7 +68,7 @@ export default {
 
       const x = d3
         .scalePoint()
-        .domain(this.history.map((h) => h.weekNumber))
+        .domain(d3.range(1, d3.max(this.history, (d) => d.weekNumber)+1))
         .range([0, chartWidth]);
       chart
         .append("g")
@@ -77,11 +77,11 @@ export default {
 
       const y = d3
         .scaleLinear()
-        .domain(d3.extent(this.history.map((h) => h.totalPoints)))
+        .domain(d3.extent(this.history, (d) => d.totalPoints))
         .range([chartHeight, 0]);
       chart
         .append("g")
-        .call(d3.axisLeft(y));
+        .call(d3.axisLeft(y.nice()));
       
       chart
         .append("text")

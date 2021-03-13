@@ -39,7 +39,7 @@
           bg-gray-100
           dark:bg-gray-700"
       >
-        {{player.playerName}} ({{player.totalPoints}})
+        {{player.playerName}} ({{player.playerTotalPoints}})
       </router-link>
     </div>
   </div>
