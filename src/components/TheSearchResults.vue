@@ -1,36 +1,41 @@
 <template>
-  <div v-if="searchTerm.length">
-    <router-link
-      v-for="result in searchResults"      
+  <div v-if="searchResults.length">
+    <div
+      v-for="(result, index) in searchResults"
       :key="result.to"
       :to="result.to"
+      @click="select(index)"
       class="
-        block
         hover:bg-gray-100
         px-4
         py-2"
+      :class="{'font-bold': index === focusedSearchResultIndex}"
     >
       {{result.label}}
-    </router-link>
-    <div
-      v-if="!searchResults.length"
-      class="
-        text-gray-400
-        block
-        p-2"
-    >
-      No matching results...
     </div>
+  </div>
+  <div
+    v-else
+    class="
+      text-gray-400
+      italic
+      p-2
+      px-4
+      py-2"
+  >
+    No matching results...
   </div>
 </template>
 
 <script>
-import { mapGetters, mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   computed: {
-    ... mapState("search", ["searchTerm"]),
-    ...mapGetters("search", ["searchResults"]),
+    ...mapState("search", ["searchResults", "focusedSearchResultIndex"]),
   },
+  methods: {
+    ...mapActions("search", ["moveSelection", "confirmSelection"]),
+  }
 };
 </script>

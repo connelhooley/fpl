@@ -141,7 +141,7 @@ export default {
       
       const y = d3
         .scaleLinear()
-        .domain([minTotal, maxTotal])
+        .domain([Math.min(0, minTotal), maxTotal])
         .range([chartHeight, 0]);
 
       chart

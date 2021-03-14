@@ -1,38 +1,41 @@
 <template>
   <div id="app">
-    <the-header />
-    <the-modal :isOpen="!!searchTerm">
-      <template #default>
-        <the-content />
-      </template>
-      <template #modal>
-        <the-search-results />
-      </template>
-    </the-modal>
+    <the-keyboard-controls>
+      <the-header />
+      <the-modal :isOpen="openModel">
+        <template #default>
+          <the-content />
+        </template>
+        <template #modal>
+          <the-search-results />
+        </template>
+      </the-modal>
+    </the-keyboard-controls>
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import TheHeader from "./components/TheHeader";
 import TheContent from "./components/TheContent";
 import TheModal from "./components/TheModal";
 import TheSearchResults from "./components/TheSearchResults";
+import TheKeyboardControls from './components/TheKeyboardControls.vue';
 
 export default {
   name: "App",
   components: {
+    TheKeyboardControls,
     TheHeader,
-    TheModal,
     TheContent,
+    TheModal,
     TheSearchResults,
   },
   created() {
     this.fetchStatic();
   },
   computed: {
-    ...mapState("search", ["searchTerm"]),
-    ...mapGetters("search", ["searchResults"]),
+    ...mapGetters("search", ["openModel"]),
   },
   methods: {
     ...mapActions(["fetchStatic"]),

@@ -7,12 +7,11 @@
       opacity-90
       bg-gray-800"
     ></div>
-    <div v-if="isOpen" class="
+    <div v-show="isOpen" class="
       absolute
-      inset-x-6
+      inset-6
       lg:inset-x-32
-      xl:inset-x-64
-      top-6"
+      xl:inset-x-64"
     >
       <div class="
         bg-white
