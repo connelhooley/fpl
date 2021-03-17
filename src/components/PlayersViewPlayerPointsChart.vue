@@ -196,7 +196,7 @@ export default {
         .attr("cx", (_, i) => i * (barWidth) + (barWidth/2) + 3)
         .attr("cy", (d) => y(Math.max(0, d.total))-25)
         .style("fill", "currentColor")
-        .attr("r", 8);
+        .attr("r", 9);
 
       chart
         .selectAll(".totalLabel")

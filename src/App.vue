@@ -1,44 +1,36 @@
 <template>
   <div id="app">
-    <the-keyboard-controls>
-      <the-header />
-      <the-modal :isOpen="openModel">
-        <template #default>
-          <the-content />
-        </template>
-        <template #modal>
-          <the-search-results />
-        </template>
-      </the-modal>
-    </the-keyboard-controls>
+    <the-header />
+    <the-content />
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions } from "vuex";
 import TheHeader from "./components/TheHeader";
 import TheContent from "./components/TheContent";
-import TheModal from "./components/TheModal";
-import TheSearchResults from "./components/TheSearchResults";
-import TheKeyboardControls from './components/TheKeyboardControls.vue';
 
 export default {
   name: "App",
   components: {
-    TheKeyboardControls,
     TheHeader,
     TheContent,
-    TheModal,
-    TheSearchResults,
   },
   created() {
+    window.addEventListener("keydown", this.keyHandler);
     this.fetchStatic();
   },
-  computed: {
-    ...mapGetters("search", ["openModel"]),
+  destroyed() {
+    window.removeEventListener("keydown", this.keyHandler);
   },
   methods: {
+    ...mapActions("search", ["focusSearchBar"]),
     ...mapActions(["fetchStatic"]),
+    keyHandler(e) {
+      if (e.code === "KeyK" && e.ctrlKey) {
+        this.focusSearchBar();
+      }
+    },
   },
 };
 </script>

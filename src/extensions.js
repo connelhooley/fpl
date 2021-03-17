@@ -19,3 +19,11 @@ Array.prototype.toLookUp = function (getId, getVal) {
     [getId(curr)]: getVal(curr),
   }), {})
 };
+
+String.prototype.stripAccents = function () {
+  return this
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\u00F8/g, "o") // ø
+    .replace(/\u00D8/g, "O"); // Ø
+}

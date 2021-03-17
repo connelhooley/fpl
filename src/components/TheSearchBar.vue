@@ -1,76 +1,131 @@
 <template>
-  <input
-    type="text"
-    placeholder="Search for a team or player... (CTRL+K)"
-    ref="searchRef"
-    v-model="searchTerm"
-    @keyup.arrow-up.prevent
-    @keydown.arrow-up.prevent
-    @keyup.arrow-down.prevent
-    @keydown.arrow-down.prevent
-    @blur="searchBlur"
-    class="
-      text-gray-500
-      placeholder-gray-400
-      focus:outline-none
-      focus:ring-4
-      focus:ring-opacity-50
-      focus:ring-blue-500
-      dark:focus:ring-blue-400
-      bg-white
-      block
-      w-full
-      h-10
-      p-4
-      rounded-lg"
-  />
+  <div class="relative">
+    <input
+      type="text"
+      placeholder="Search for a team or player... (ctrl+k)"
+      ref="searchInputRef"
+      v-model="searchInputValue"
+      @keyup.arrow-up.prevent
+      @keydown.arrow-up.prevent="moveUp"
+      @keyup.arrow-down.prevent
+      @keydown.arrow-down.prevent="moveDown"
+      @keydown.esc.prevent="clear"
+      @keydown.enter.prevent="select(selectedIndex)"
+      @keyup.tab.prevent
+      @keydown.tab.prevent
+      @blur="blur"
+      class="
+        text-gray-500
+        placeholder-gray-400
+        focus:outline-none
+        focus:ring-4
+        focus:ring-opacity-50
+        focus:ring-blue-500
+        dark:focus:ring-blue-400
+        bg-white
+        block
+        w-full
+        h-10
+        p-4
+        rounded-lg"
+    />
+    <div
+      v-if="searchTerm.length"
+      class="
+        absolute
+        w-full
+        mt-2
+        p-2
+        text-white
+        dark:text-black
+        bg-gray-800
+        dark:bg-white
+        rounded-lg"
+    >
+      <div ref="resultsContainerRef" class="
+        w-full
+        max-h-80
+        overflow-y-auto">
+        <the-search-bar-result
+          v-for="(result, index) in searchResults"
+          :key="result.to"
+          :result="result"
+          :selected="index === selectedIndex"
+          @click="select(index)"
+        />
+        <div
+          v-if="!searchResults.length"
+          class="
+            text-gray-400
+            italic
+            p-2
+            px-4
+            py-2"
+        >
+          No matching results...
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from "vuex";
-
+import TheSearchBarResult from "./TheSearchBarResult";
+import { mapActions, mapState } from 'vuex';
 export default {
+  data() {
+    return {
+      selectedIndex: 0,
+    };
+  },
+  components: {
+    TheSearchBarResult,
+  },
   computed: {
-    ...mapState("search", [
-      "isSearchBarFocused",
-      "isSearchBarBlurred",
-      "isSearchResultConfirmed",
-    ]),
-    ...mapGetters("search", [
-      "selectedSearchResult",
-    ]),
-    searchTerm: {
+    ...mapState("search", ["searchTerm", "searchResults", "searchBarFocused"]),
+    searchInputValue: {
       get() {
-        return this.$store.state.search.searchTerm;
+        return this.searchTerm;
       },
-      set(value) {
-        this.$store.dispatch("search/search", value);
+      set(val) {
+        this.updateSearchTerm(val);
       },
     },
   },
-  watch: {
-    isSearchBarFocused(val) {
-      if (this.$refs.searchRef && val) {
-        this.$refs.searchRef.focus();
-        this.focusedSearchBar();
+  methods: {
+    ...mapActions("search", ["updateSearchTerm"]),
+    select(index) {
+      this.$router.push(this.searchResults[index].to);
+      this.clear();
+    },
+    moveUp() {
+      const newIndex = this.selectedIndex-1;
+      if (newIndex >= 0 && newIndex < this.searchResults.length) {
+        this.selectedIndex = newIndex;
       }
     },
-    isSearchBarBlurred(val) {
-      if (this.$refs.searchRef && val) {
-        this.$refs.searchRef.blur();
-        this.blurredSearchBar();
+    moveDown() {
+      const newIndex = this.selectedIndex+1;
+      if (newIndex >= 0 && newIndex < this.searchResults.length) {
+        this.selectedIndex = newIndex;
       }
     },
-    isSearchResultConfirmed(val) {
-      if (this.$refs.searchRef && val) {
-        this.$router.push(this.selectedSearchResult.to);
+    clear() {
+      this.searchInputValue = "";
+      this.$refs.searchInputRef.blur();
+    },
+    blur(e) {
+      if (!this.$refs.resultsContainerRef || !this.$refs.resultsContainerRef.contains(e.relatedTarget)) {
         this.clear();
       }
     },
   },
-  methods: {
-    ...mapActions("search", ["focusedSearchBar", "blurredSearchBar", "clear"]),
-    searchBlur() {
+  watch: {
+    searchBarFocused() {
+      this.$refs.searchInputRef.focus();
+    },
+    searchTerm() {
+      this.selectedIndex = 0;
     },
   },
 };
