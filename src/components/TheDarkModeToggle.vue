@@ -1,9 +1,16 @@
 <template>
-  <toggle-button v-model="isDark" :css-colors="true" :font-size="15" :height="30" :width="60" :margin="3" :labels="{checked: '🌙', unchecked: '☀️'}" />
+  <slider v-model="isDark">
+    <template #true>
+      <font-awesome-icon :icon="['fas', 'moon']" />
+    </template>
+    <template #false>
+      <font-awesome-icon :icon="['fas', 'sun']" />
+    </template>
+  </slider>
 </template>
 
 <script>
-import { ToggleButton } from "vue-js-toggle-button";
+import Slider from './Slider.vue';
 
 export default {
   data() {
@@ -12,7 +19,7 @@ export default {
     };
   },
   components: {
-    ToggleButton,
+    Slider,
   },
   created() {
     const mode = localStorage.getItem("darkMode");

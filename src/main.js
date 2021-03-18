@@ -4,6 +4,7 @@ import "tippy.js/dist/tippy.css";
 import Vue from "vue";
 
 import "./extensions";
+import "./icons";
 
 import App from "./App";
 import router from "./router";

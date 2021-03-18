@@ -14,10 +14,10 @@
     :class="boldStyle"
   >
     <template v-if="isTeam">
-      {{result.teamName}}
+      <font-awesome-icon :icon="['fas', 'users']" />&nbsp;{{result.teamName}}
     </template>
     <template v-if="isPlayer">
-      {{result.playerName}}&nbsp;<span class="text-xs text-gray-500">{{result.teamShortName}}</span>
+      <font-awesome-icon :icon="['fas', 'user']" />&nbsp;{{result.playerName}}&nbsp;<span class="text-xs text-gray-500">{{result.teamShortName}}</span>
     </template>
   </div>
 </template>
