@@ -66,9 +66,11 @@ export default {
         .append("g")
         .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
+      const historyNoBlanks = this.history.filter((history) => !history.isBlank);
+
       const x = d3
         .scalePoint()
-        .domain(d3.range(1, d3.max(this.history, (d) => d.weekNumber)+1))
+        .domain(d3.range(1, d3.max(this.history, (d) => d.weekNumber) + 1))
         .range([0, chartWidth]);
       chart
         .append("g")
@@ -77,7 +79,7 @@ export default {
 
       const y = d3
         .scaleLinear()
-        .domain(d3.extent(this.history, (d) => d.totalPoints))
+        .domain(d3.extent(historyNoBlanks, (d) => d.totalPoints))
         .range([chartHeight, 0]);
       chart
         .append("g")
@@ -104,10 +106,10 @@ export default {
         .attr("font-size", 10)
         .text("GW");
 
-      const minY = d3.min(this.history.map((h) => h.totalPoints));
+      const minY = d3.min(historyNoBlanks, (d) => d.totalPoints);
 
       if (minY < 0) {
-        const [minX, maxX] = d3.extent(this.history.map((h) => h.weekNumber));
+        const [minX, maxX] = d3.extent(this.history, (d) => d.weekNumber);
         chart
           .append("line") 
           .attr("x1", x(minX))
@@ -127,8 +129,10 @@ export default {
         .y((d) => y(d.totalPoints));
 
       chart
+        .selectAll(".line")
+        .data(this.history.splitAt((history) => history.isBlank))
+        .enter()
         .append("path")
-        .datum(this.history)
         .attr("class", "line text-blue-500 dark:text-blue-300")
         .attr("d", (d) => line(d))
         .attr("stroke", "currentColor")
@@ -137,7 +141,7 @@ export default {
 
       chart
         .selectAll(".circle")
-        .data(this.history)
+        .data(historyNoBlanks)
         .enter()
         .append("circle")
         .attr("class", "circle text-blue-500 dark:text-blue-300")
@@ -148,7 +152,7 @@ export default {
 
       chart
         .selectAll(".circleLabel")
-        .data(this.history)
+        .data(historyNoBlanks)
         .enter()
         .append("text")
         .attr("class", "invisible md:visible text-white dark:text-black circleLabel font-mono")
@@ -161,7 +165,7 @@ export default {
 
       chart
         .selectAll(".tooltipTarget")
-        .data(this.history)
+        .data(historyNoBlanks)
         .enter()
         .append("circle")
         .attr("class", "tooltipTarget")

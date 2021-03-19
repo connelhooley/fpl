@@ -43,9 +43,3 @@ export default {
   },
 };
 </script>
-
-<style lang="postcss" scoped>
-/deep/ .v-switch-core {
-  @apply bg-gray-400;
-}
-</style>

@@ -69,22 +69,24 @@ export default {
 
       const radius = (Math.min(svgWidth, svgHeight) / 2) - margin;
 
+      const historyNoBlanks = this.history.filter((history) => !history.isBlank);
+
       const data = [
         {
           label: "0",
-          total: this.history.filter((d) => d.minutesPlayed === 0).length,
+          total: historyNoBlanks.count((d) => d.minutesPlayed === 0),
         },
         {
           label: "1-59",
-          total: this.history.filter((d) => d.minutesPlayed >= 1 && d.minutesPlayed <= 59).length,
+          total: historyNoBlanks.count((d) => d.minutesPlayed >= 1 && d.minutesPlayed <= 59),
         },
         {
           label: "60-89",
-          total: this.history.filter((d) => d.minutesPlayed >= 60 && d.minutesPlayed <= 89).length,
+          total: historyNoBlanks.count((d) => d.minutesPlayed >= 60 && d.minutesPlayed <= 89),
         },
         {
           label: "90",
-          total: this.history.filter((d) => d.minutesPlayed === 90).length,
+          total: historyNoBlanks.count((d) => d.minutesPlayed === 90),
         },
       ];
 

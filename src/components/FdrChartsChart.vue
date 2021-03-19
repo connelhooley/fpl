@@ -118,20 +118,9 @@ export default {
         .x((d) => x(d.weekNumber))
         .y((d) => y(d.difficulty));
 
-      const lineData = [
-        0,
-        ...this.weeks
-          .filter((week) => week.oppositions.length === 0)
-          .map((week) => this.weeks.indexOf(week))
-          .flatMap((i) => [i, i + 1]),
-        this.weeks.length,
-      ]
-        .pairwise()
-        .map(([start, stop]) => this.weeks.slice(start, stop));
-
       chart
         .selectAll(".line")
-        .data(lineData)
+        .data(this.weeks.splitAt((week) => week.isBlank))
         .enter()
         .append("path")
         .attr("class", "line")
@@ -142,7 +131,7 @@ export default {
 
       chart
         .selectAll(".circle")
-        .data(this.weeks.filter((f) => !isNaN(f.difficulty)))
+        .data(this.weeks.filter((week) => !week.isBlank))
         .enter()
         .append("circle")
         .attr("class", "circle")

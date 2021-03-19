@@ -42,7 +42,7 @@ export default {
         })),
       }));
     },
-    currentPlayer(state, _getters, rootState) {
+    currentPlayer(state, _getters, rootState, rootGetters) {
       if (!rootState.isStaticDataLoaded || !state.isCurrentPlayerHistoryDataLoaded) {
         return [];
       }
@@ -53,14 +53,22 @@ export default {
       return {
         ...player,
         ...position,
-        history: state.currentPlayerHistory
-          .map((history) => ({
+        history: rootGetters.completedWeeks.map((week) => {
+          const history = state.currentPlayerHistory.find((history) => history.weekNumber == week.weekNumber);
+          if (!history) {
+            return {
+              ...week,
+              isBlank: true,
+            };
+          }
+          return {
             ...history,
-            ...rootState.weeks.find((week) => week.weekNumber === history.weekNumber),
+            ...week,
             oppositionName: rootState.teams.find((team) => team.teamId === history.oppositionId).teamName,
+            isBlank: false,
             points: calcPoints(history, position),
-          }))
-          .filter((history) => history.weekIsFinished),
+          };
+        }),
       };
     },
   },
@@ -87,7 +95,7 @@ export default {
           penaltiesMissed: history.penalties_missed,
           saves: history.saves,
         }))
-      .sort((a, b) => a.weekNumber - b.weekNumber);
+        .sort((a, b) => a.weekNumber - b.weekNumber);
       commit("SET_CURRENT_PLAYER_HISTORY_DATA", {currentPlayerHistory});
     },
   },

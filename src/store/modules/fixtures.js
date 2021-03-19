@@ -40,6 +40,7 @@ export default {
             });
           return {
             ...week,
+            isBlank: oppositions.length === 0,
             difficulty: oppositions.map((opposition) => opposition.difficulty).average(),
             oppositions,
           };

@@ -43,7 +43,7 @@ export default {
   computed: {
     anyErrors() {
       if (this.history) {
-        const errors = this.history.filter(d => d.calculationsAreCorrect === false);
+        const errors = this.history.filter((d) => d.calculationsAreCorrect === false);
         if (errors.length > 0) {
           console.dir(errors);
           return true;
@@ -77,56 +77,56 @@ export default {
       const data = [
         {
           label: "Minutes",
-          total: d3.sum(this.history, d => d.points.minutesPlayed),
+          total: d3.sum(this.history.filter((history) => history.points), (d) => d.points.minutesPlayed),
         },
         {
           label: "Bonus",
-          total: d3.sum(this.history, d => d.points.bonusPoints),
+          total: d3.sum(this.history.filter((history) => history.points), (d) => d.points.bonusPoints),
         },
         {
           label: "Goals",
-          total: d3.sum(this.history, d => d.points.goals),
+          total: d3.sum(this.history.filter((history) => history.points), (d) => d.points.goals),
         },
         {
           label: "Assists",
-          total: d3.sum(this.history, d => d.points.assists),
+          total: d3.sum(this.history.filter((history) => history.points), (d) => d.points.assists),
         },
         {
           label: "Clean Sheet",
-          total: d3.sum(this.history, d => d.points.cleanSheets),
+          total: d3.sum(this.history.filter((history) => history.points), (d) => d.points.cleanSheets),
         },
         {
           label: "Conceded",
-          total: d3.sum(this.history, d => d.points.conceded),
+          total: d3.sum(this.history.filter((history) => history.points), (d) => d.points.conceded),
         },
         {
           label: "Own Goals",
-          total: d3.sum(this.history, d => d.points.ownGoals),
+          total: d3.sum(this.history.filter((history) => history.points), (d) => d.points.ownGoals),
         },
         {
           label: "Yellows",
-          total: d3.sum(this.history, d => d.points.yellows),
+          total: d3.sum(this.history.filter((history) => history.points), (d) => d.points.yellows),
         },
         {
           label: "Reds",
-          total: d3.sum(this.history, d => d.points.reds),
+          total: d3.sum(this.history.filter((history) => history.points), (d) => d.points.reds),
         },
         {
           label: "Pens Saved",
-          total: d3.sum(this.history, d => d.points.penaltiesSaved),
+          total: d3.sum(this.history.filter((history) => history.points), (d) => d.points.penaltiesSaved),
         },
         {
           label: "Pens Missed",
-          total: d3.sum(this.history, d => d.points.penaltiesMissed),
+          total: d3.sum(this.history.filter((history) => history.points), (d) => d.points.penaltiesMissed),
         },
         {
           label: "Saves",
-          total: d3.sum(this.history, d => d.points.saves),
+          total: d3.sum(this.history.filter((history) => history.points), (d) => d.points.saves),
         },
-      ].filter(d => d.total !== 0);
+      ].filter((d) => d.total !== 0);
 
       const color = d3.scaleOrdinal()
-        .domain(data.map(d => d.label))
+        .domain(data.map((d) => d.label))
         .range(d3.schemeSet2);
 
       svg
@@ -137,7 +137,7 @@ export default {
         .append("g")
         .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-      const [minTotal, maxTotal] = d3.extent(data, d => d.total);
+      const [minTotal, maxTotal] = d3.extent(data, (d) => d.total);
       
       const y = d3
         .scaleLinear()

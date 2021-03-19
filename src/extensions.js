@@ -1,26 +1,37 @@
-Array.prototype.pairwise = function () {
+Array.prototype.pairwise = function() {
   return this.reduce((acc, curr, index) => {
     if ((index % 2) === 0) {
       return [...acc, [curr]];
     } else {
-      const [rest, [prev]] = [acc.slice(0, -1), ...acc.slice(-1)];
+      const rest = acc.slice(0, -1);
+      const prev = acc.slice(-1)[0][0];
       return [...rest, [prev, curr]];
     }
   }, []);
 };
 
-Array.prototype.average = function () {
+Array.prototype.average = function() {
   return this.reduce((prev, curr) => (prev + curr), 0) / this.length;
 };
 
-Array.prototype.toLookUp = function (getId, getVal) {
-  return this.reduce((acc, curr) => ({
-    ...acc,
-    [getId(curr)]: getVal(curr),
-  }), {})
+Array.prototype.count = function(predicate) {
+  return this.reduce((acc, curr) => acc + predicate(curr), 0);
 };
 
-String.prototype.stripAccents = function () {
+Array.prototype.splitAt = function(predicate) {
+  return [
+    0,
+    ...this
+      .filter(predicate)
+      .map((val) => this.indexOf(val))
+      .flatMap((i) => [i, i + 1]),
+    this.length,
+  ]
+    .pairwise()
+    .map(([start, stop]) => this.slice(start, stop));
+};
+
+String.prototype.stripAccents = function() {
   return this
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, "")
