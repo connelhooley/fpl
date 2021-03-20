@@ -1,50 +1,32 @@
-import {calcPoints} from "../../fplPointsRules";
+import { calcPoints } from "../../fplPointsRules";
 
 export default {
   namespaced: true,
   state: {
     isCurrentPlayerHistoryDataLoaded: false,
-    currentPlayerId: [],
+    currentPlayerId: 0,
     currentPlayerHistory: [],
   },
   mutations: {
     SET_CURRENT_PLAYER_ID(state, currentPlayerId) {
       state.currentPlayerId = parseInt(currentPlayerId);
     },
-    CLEAR_CURRENT_PLAYER_HISTORY_DATA(state) {
-      state.isCurrentPlayerHistoryDataLoaded = false;
-      state.currentPlayerHistory = [];
+    CLEAR_CURRENT_PLAYER_ID(state) {
+      state.currentPlayerId = 0;
     },
     SET_CURRENT_PLAYER_HISTORY_DATA(state, data) {
       state.isCurrentPlayerHistoryDataLoaded = true;
       state.currentPlayerHistory = data.currentPlayerHistory;
     },
+    CLEAR_CURRENT_PLAYER_HISTORY_DATA(state) {
+      state.isCurrentPlayerHistoryDataLoaded = false;
+      state.currentPlayerHistory = [];
+    },
   },
   getters: {
-    squads(_state, _getters, rootState) {
-      if (!rootState.isStaticDataLoaded) {
-        return [];
-      }
-
-      return rootState.teams.map((team) => ({
-        ...team,
-        positions: rootState.positions.map((position) => ({
-          ...position,
-          players: rootState.players
-            .filter((player) => player.teamId === team.teamId)
-            .filter((player) => player.positionId === position.positionId)
-            .map((player) => ({
-              playerId: player.playerId,
-              playerName: player.playerName,
-              playerTotalPoints: player.playerTotalPoints,
-            }))
-            .sort((a,b) => b.playerTotalPoints - a.playerTotalPoints),
-        })),
-      }));
-    },
     currentPlayer(state, _getters, rootState, rootGetters) {
       if (!rootState.isStaticDataLoaded || !state.isCurrentPlayerHistoryDataLoaded) {
-        return [];
+        return null;
       }
 
       const player = rootState.players.find((player) => player.playerId === state.currentPlayerId);

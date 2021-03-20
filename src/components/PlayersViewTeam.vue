@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="currentTeam">
     <div class="
       p-4
       text-4xl
@@ -9,11 +9,11 @@
       bg-gray-300
       dark:bg-gray-900"
     >
-      {{teamName}}
+      {{currentTeam.teamName}}
     </div>
     <div
-      v-for="position in positions"
-      :key="`position-${position.positionId}`"
+      v-for="position in currentTeam.positions"
+      :key="position.positionId"
     >
       <div class="
         px-4
@@ -28,7 +28,7 @@
       </div>
       <router-link
         v-for="player in position.players"
-        :key="`player-${player.playerId}`"
+        :key="player.playerId"
         :to="`/players/player/${player.playerId}`"
         class="
           block
@@ -43,13 +43,26 @@
       </router-link>
     </div>
   </div>
+  <TeamLoading v-else />
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
+import TeamLoading from "./PlayersViewTeamLoading"
+
 export default {
-  props: {
-    teamName: String,
-    positions: Array,
+  components: {
+    TeamLoading,
+  },
+  created() {
+    const teamId = this.$route.params.teamId;
+    this.setCurrentTeamId(teamId);
+  },
+  methods: {
+    ...mapActions("teamDetails", ["setCurrentTeamId"]),
+  },
+  computed: {
+    ...mapGetters("teamDetails", ["currentTeam"]),
   },
 };
 </script>

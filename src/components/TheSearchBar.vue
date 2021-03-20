@@ -1,6 +1,7 @@
 <template>
   <div class="relative">
     <input
+      id="search-bar"
       type="text"
       placeholder="Search for a team or player... (ctrl+k)"
       ref="searchInputRef"
@@ -46,7 +47,7 @@
         w-full
         max-h-80
         overflow-y-auto">
-        <the-search-bar-result
+        <TheSearchBarResult
           v-for="(result, index) in searchResults"
           :key="result.to"
           :result="result"

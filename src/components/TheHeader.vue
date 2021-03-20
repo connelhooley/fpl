@@ -1,7 +1,25 @@
 <template>
   <header class="flex bg-gray-200 dark:bg-gray-900">
     <nav class="flex-none flex">
-      <router-link 
+      <TheBackButton class="
+        text-2xl
+        flex
+        flex-col
+        justify-center
+        inline-block
+        p-4
+        hover:bg-gray-300
+        dark:hover:bg-gray-700" />
+      <TheForwardButton class="
+        text-2xl
+        flex
+        flex-col
+        justify-center
+        inline-block
+        p-4
+        hover:bg-gray-300
+        dark:hover:bg-gray-700" />
+      <RouterLink 
         v-for="(link, index) in menuLinks"
         :key="index"
         :to="link.to"
@@ -20,11 +38,12 @@
         <div>
           {{link.label}}
         </div>
-      </router-link>
+      </RouterLink>
     </nav>
     <div class="
       flex-auto
-      p-4
+      py-4
+      px-8
       flex
       flex-col
       justify-center"
@@ -32,10 +51,9 @@
       <div class="
         mx-auto
         w-full
-        md:w-2/3
-        lg:w-1/2"
+        md:w-2/3"
       >
-        <the-search-bar />
+        <TheSearchBar />
       </div>
     </div>
     <div class="
@@ -48,15 +66,43 @@
         flex-col
         justify-center"
       >
-        <the-dark-mode-toggle />
+        <TheDarkModeToggle />
       </div>
     </div>
+    <TheMinimiseButton class="
+      text-2xl
+      flex
+      flex-col
+      justify-center
+      inline-block
+      py-4
+      px-2
+      hover:bg-gray-300
+      dark:hover:bg-gray-700
+      hover:text-blue-300
+      dark:hover:text-blue-400" />
+    <TheCloseButton class="
+      text-2xl
+      flex
+      flex-col
+      justify-center
+      inline-block
+      py-4
+      px-2
+      hover:bg-gray-300
+      dark:hover:bg-gray-700
+      hover:text-blue-300
+      dark:hover:text-blue-400" />
   </header>
 </template>
 
 <script>
-import TheDarkModeToggle from './TheDarkModeToggle.vue';
+import TheBackButton from "./TheBackButton";
+import TheForwardButton from "./TheForwardButton";
+import TheDarkModeToggle from "./TheDarkModeToggle";
 import TheSearchBar from "./TheSearchBar";
+import TheMinimiseButton from "./TheMinimiseButton";
+import TheCloseButton from "./TheCloseButton";
 
 export default {
   data() {
@@ -74,8 +120,12 @@ export default {
     };
   },
   components: {
+    TheBackButton,
+    TheForwardButton,
     TheSearchBar,
     TheDarkModeToggle,
+    TheMinimiseButton,
+    TheCloseButton,
   },
   created() {
     const mode = localStorage.getItem("darkMode");
@@ -87,3 +137,16 @@ export default {
   },
 };
 </script>
+
+<style lang="postcss" scoped>
+  header {  
+    -webkit-user-select: none;
+    -webkit-app-region: drag;
+  }
+  /deep/ input,
+  /deep/ a,
+  /deep/ button {  
+    @apply focus:outline-none;
+    -webkit-app-region: no-drag;
+  }
+</style>

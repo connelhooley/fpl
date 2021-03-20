@@ -1,27 +1,18 @@
 <template>
-  <div class="
-    bg-gray-200
-    dark:bg-gray-700
-    rounded-lg"
-  >
-    <div class="
-      p-3
-      text-center"
-    >
-      {{team}}
-    </div>
-    <svg 
+  <ContentContainer :title="team">
+    <svg
       ref="svg"
       class="
         block
         w-full"
-    ></svg>  
-  </div>
+    />  
+  </ContentContainer>    
 </template>
 
 <script>
 import * as d3 from "d3";
 import tippy from "tippy.js";
+import ContentContainer from "./ContentContainer";
 
 export default {
   props: {
@@ -33,6 +24,9 @@ export default {
     return {
       isMounted: false,
     };
+  },
+  components: {
+    ContentContainer,
   },
   watch: {
     team() {

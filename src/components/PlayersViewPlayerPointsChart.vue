@@ -1,26 +1,19 @@
 <template>
-  <div class="
-    bg-gray-100
-    dark:bg-gray-700
-    block
-    rounded-lg"
-  >
-    <div class="
-      p-3
-      text-center"
-    >
-      Points Breakdown
-    </div>
+  <ContentContainer title="Points Breakdown">
     <p v-if="anyErrors">There were some errors parsing the data</p>
-    <svg v-else ref="svg" class="
-      block
-      w-full"
-    ></svg>
-  </div>
+    <svg
+      v-else
+      ref="svg"
+      class="
+        block
+        w-full"
+    />  
+  </ContentContainer>
 </template>
 
 <script>
 import * as d3 from "d3";
+import ContentContainer from "./ContentContainer";
 
 export default {
   props: {
@@ -30,6 +23,9 @@ export default {
     return {
       isMounted: false,
     };
+  },
+  components: {
+    ContentContainer,
   },
   watch: {
     history() {

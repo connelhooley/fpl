@@ -32,7 +32,7 @@
           bg-gray-100
           dark:bg-gray-700"
       >
-        <Loading :width="60" :height="6" />
+        <Loading :darkBg="600" :width="60" :height="6" />
       </div>
     </div>
   </div>

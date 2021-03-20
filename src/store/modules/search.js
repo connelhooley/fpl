@@ -30,7 +30,7 @@ export default {
         .slice(0, 3)
         .map((team) => ({
           type: "team",
-          to: `/team/${team.teamId}`,
+          to: `/players/teams/${team.teamId}`,
           ...team,
         }));
 

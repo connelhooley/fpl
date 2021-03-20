@@ -1,7 +1,7 @@
 <template>
-  <div id="app">
-    <the-header />
-    <the-content />
+  <div id="app" class="flex flex-col">
+    <the-header class="flex-none" />
+    <the-content class="flex-grow overflow-y-auto" />
   </div>
 </template>
 
@@ -36,6 +36,13 @@ export default {
 </script>
 
 <style lang="postcss">
+html,
+body,
+#app {
+    height: 100%;
+    overflow-y: hidden;
+}
+
 body {
   @apply bg-white text-black dark:text-white dark:bg-gray-800;
 }

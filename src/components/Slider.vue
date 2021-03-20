@@ -54,8 +54,4 @@ export default {
   button:hover .label  {
     @apply text-blue-300 dark:text-blue-400;
   }
-/*   
-  text-blue-500
-  dark:text-blue-400
-   */
 </style>

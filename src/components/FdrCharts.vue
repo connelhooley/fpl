@@ -1,7 +1,7 @@
 <template>
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
     <template v-if="fdr.length">
-      <chart
+      <FdrChart
         v-for="team in fdr"
         :key="team.teamId"
         :team="team.teamName"
@@ -10,7 +10,7 @@
       />
     </template>
     <template v-else>
-      <loading-chart v-for="n in 5" :key="n" />
+      <LoadingLineChart v-for="n in 5" :key="n" />
     </template>
   </div>
 </template>
@@ -19,13 +19,13 @@
 import * as d3 from "d3";
 import { mapGetters } from "vuex";
 
-import Chart from "./FdrChartsChart";
-import LoadingChart from "./FdrChartsLoadingChart";
+import FdrChart from "./FdrChartsChart";
+import LoadingLineChart from "./LoadingLineChart";
 
 export default {
   components: {
-    Chart,
-    LoadingChart,
+    FdrChart,
+    LoadingLineChart,
   },
   computed: {
     color() {

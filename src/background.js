@@ -12,9 +12,11 @@ protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } }
 ])
 
+let win;
+
 async function createWindow() {
   // Create the browser window.
-  const win = new BrowserWindow({
+  win = new BrowserWindow({
     webPreferences: {
 
       // Use pluginOptions.nodeIntegration, leave this alone
@@ -22,7 +24,8 @@ async function createWindow() {
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
       contextIsolation: true,
       preload: path.join(__dirname, 'preload.js'),
-    }
+    },
+    frame: false,
   })
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
@@ -34,8 +37,8 @@ async function createWindow() {
     // Load the index.html when not in development
     win.loadURL('app://./index.html')
   }
-  win.maximize();
   // win.removeMenu();
+  win.maximize();
 }
 
 // Quit when all windows are closed.
@@ -96,4 +99,8 @@ ipcMain.handle("static-api", async () => {
 ipcMain.handle("element-summary-api", async (_, playerId) => {
   const res = await fetch(`https://fantasy.premierleague.com/api/element-summary/${playerId}/`);
   return await res.json()
+})
+
+ipcMain.handle("minimize", () => {
+  win.minimize();
 })

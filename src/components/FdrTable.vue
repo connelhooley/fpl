@@ -38,7 +38,7 @@
           flex
           flex-row"
         >
-          <table-cell
+          <FdrTableCell
             v-for="week in team.weeks"
             :key="week.weekNumber"
             :oppositions="week.oppositions"
@@ -48,20 +48,20 @@
     </div>
   </div>
   <div v-else>
-    <loading-table />
+    <FdrLoadingTable />
   </div>
 </template>
 
 <script>
 import { mapGetters, mapState } from "vuex";
 
-import TableCell from "./FdrTableCell";
-import LoadingTable from "./FdrTableLoading";
+import FdrTableCell from "./FdrTableCell";
+import FdrLoadingTable from "./FdrTableLoading";
 
 export default {
   components: {
-    TableCell,
-    LoadingTable,
+    FdrTableCell,
+    FdrLoadingTable,
   },
   computed: {
     ...mapState(["teams"]),

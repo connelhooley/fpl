@@ -1,26 +1,17 @@
 <template>
-  <div class="
-    bg-gray-100
-    dark:bg-gray-700
-    block
-    rounded-lg"
-  >
-    <div class="
-      p-3
-      text-center"
-    >
-      Minutes Played
-    </div>
-    <p v-if="anyErrors">There were some errors parsing the data</p>
-    <svg v-else ref="svg" class="
-      block
-      w-full"
-    ></svg>
-  </div>
+  <ContentContainer title="Minutes Played">
+    <svg
+      ref="svg"
+      class="
+        block
+        w-full"
+    />  
+  </ContentContainer>    
 </template>
 
 <script>
 import * as d3 from "d3";
+import ContentContainer from "./ContentContainer";
 
 export default {
   props: {
@@ -31,6 +22,9 @@ export default {
       isMounted: false,
     };
   },
+  components: {
+    ContentContainer,
+  },
   watch: {
     history() {
       this.renderChart();
@@ -39,22 +33,6 @@ export default {
   mounted() {
     this.isMounted = true;
     this.renderChart();
-  },
-  computed: {
-    anyErrors() {
-      if (this.history) {
-        const errors = this.history.filter(d => d.calculationsAreCorrect === false);
-        if (errors.length > 0) {
-          console.dir(errors);
-          return true;
-        }
-        else {
-          return false;
-        }
-      } else {
-        return false;
-      }
-    },
   },
   methods: {
     renderChart() {
@@ -110,10 +88,7 @@ export default {
       const arcGenerator = d3
         .arc()
         .innerRadius(0)
-        .outerRadius(radius)
-
-      console.dir(data);
-      console.dir(arcs);
+        .outerRadius(radius);
 
       chart
         .selectAll(".segment")

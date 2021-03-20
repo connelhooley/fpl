@@ -5,7 +5,8 @@ import Fdr from "./components/Fdr";
 import FdrCharts from "./components/FdrCharts";
 import FdrTable from "./components/FdrTable";
 import Players from "./components/Players";
-import PlayersOverview from "./components/PlayersOverview";
+import PlayersTeams from "./components/PlayersTeams";
+import PlayersViewTeam from "./components/PlayersViewTeam";
 import PlayersViewPlayer from "./components/PlayersViewPlayer";
 
 Vue.use(VueRouter);
@@ -30,8 +31,12 @@ export default new VueRouter({routes: [
   {
     path: "/players", component: Players, children: [
       {
-        path: "overview",
-        component: PlayersOverview,
+        path: "teams",
+        component: PlayersTeams,
+      },
+      {
+        path: "teams/:teamId",
+        component: PlayersViewTeam,
       },
       {
         path: "player/:playerId",
@@ -39,9 +44,12 @@ export default new VueRouter({routes: [
       },
       {
         path: "*",
-        redirect: "/players/overview"
+        redirect: "/players/teams"
       },
     ],
   },
-  { path: "*", redirect: "/fdr/charts" },
+  { 
+    path: "*",
+    redirect: "/fdr/charts"
+  },
 ]});

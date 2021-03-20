@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 import fixtures from "./modules/fixtures";
+import teamDetails from "./modules/teamDetails";
 import playerDetails from "./modules/playerDetails";
 import search from "./modules/search";
 
@@ -82,6 +83,7 @@ export default new Vuex.Store({
   },
   modules: {
     fixtures,
+    teamDetails,
     playerDetails,
     search,
   },

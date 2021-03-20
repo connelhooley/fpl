@@ -1,6 +1,6 @@
 <template>
   <div>
-    <the-nav :links="links" />
+    <TheNav :links="links" />
     <router-view/>
   </div>
 </template>
@@ -33,5 +33,5 @@ export default {
   methods: {
     ...mapActions("fixtures", ["fetchFixtures"]),
   },
-}
+};
 </script>
