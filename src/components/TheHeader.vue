@@ -1,5 +1,12 @@
 <template>
-  <header class="flex bg-gray-200 dark:bg-gray-900">
+  <header class="
+    flex
+    border-b
+    border-blue-300
+    dark:border-blue-400
+    bg-gray-200
+    dark:bg-gray-900"
+  >
     <nav class="flex-none flex">
       <TheBackButton class="
         text-2xl
@@ -8,8 +15,9 @@
         justify-center
         inline-block
         p-4
-        hover:bg-gray-300
-        dark:hover:bg-gray-700" />
+        hover:text-blue-500
+        dark:hover:text-blue-400"
+      />
       <TheForwardButton class="
         text-2xl
         flex
@@ -17,8 +25,11 @@
         justify-center
         inline-block
         p-4
-        hover:bg-gray-300
-        dark:hover:bg-gray-700" />
+        hover:text-gray-300
+        dark:hover:text-gray-700
+        hover:text-blue-500
+        dark:hover:text-blue-400"
+      />
       <RouterLink 
         v-for="(link, index) in menuLinks"
         :key="index"
@@ -49,6 +60,8 @@
       justify-center"
     >
       <div class="
+        hidden
+        md:block
         mx-auto
         w-full
         md:w-2/3"
@@ -69,30 +82,30 @@
         <TheDarkModeToggle />
       </div>
     </div>
-    <TheMinimiseButton class="
-      text-2xl
-      flex
-      flex-col
-      justify-center
-      inline-block
-      py-4
-      px-2
-      hover:bg-gray-300
-      dark:hover:bg-gray-700
-      hover:text-blue-300
-      dark:hover:text-blue-400" />
-    <TheCloseButton class="
-      text-2xl
-      flex
-      flex-col
-      justify-center
-      inline-block
-      py-4
-      px-2
-      hover:bg-gray-300
-      dark:hover:bg-gray-700
-      hover:text-blue-300
-      dark:hover:text-blue-400" />
+    <div class="
+      ml-2
+      items-start"
+    >
+      <div class="
+        flex
+        flex-row
+        rounded-bl
+        bg-gray-900
+        text-white
+        dark:text-white
+        dark:bg-gray-800
+        text-xl"
+      >
+        <TheMinimiseButton class="
+          block
+          p-2
+          hover:text-yellow-400" />
+        <TheCloseButton class="
+          block
+          p-2
+          hover:text-red-400" />
+      </div>
+    </div>
   </header>
 </template>
 
@@ -126,14 +139,6 @@ export default {
     TheDarkModeToggle,
     TheMinimiseButton,
     TheCloseButton,
-  },
-  created() {
-    const mode = localStorage.getItem("darkMode");
-    if (mode === null) {
-      localStorage.setItem("darkMode", this.isDark);
-    } else {
-      this.isDark = mode === "true";
-    }
   },
 };
 </script>
