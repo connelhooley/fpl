@@ -74,7 +74,7 @@ export default {
 
       const y = d3
         .scaleLinear()
-        .domain(d3.extent(historyNoBlanks, (d) => d.totalPoints))
+        .domain([0, d3.max(historyNoBlanks, (d) => d.totalPoints)])
         .range([chartHeight, 0]);
       chart
         .append("g")
