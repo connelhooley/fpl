@@ -90,9 +90,9 @@
         flex
         flex-row
         rounded-bl
-        bg-gray-900
-        text-white
+        text-black
         dark:text-white
+        bg-gray-300
         dark:bg-gray-800
         text-xl"
       >
