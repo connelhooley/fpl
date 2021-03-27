@@ -37,10 +37,12 @@ export default new VueRouter({routes: [
       {
         path: "teams/:teamId",
         component: PlayersViewTeam,
+        props: true,
       },
       {
         path: "player/:playerId",
         component: PlayersViewPlayer,
+        props: true,
       },
       {
         path: "*",

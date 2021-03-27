@@ -17,14 +17,19 @@ import PointsChart from "./PlayersViewPlayerPointsChart";
 import PlayerLoading from './PlayersViewPlayerLoading.vue';
 
 export default {
+  props: {
+    playerId: {
+      type: String,
+      required: true,
+    },
+  },
   components: {
     FormChart,
     PointsChart,
     PlayerLoading,
   },
   created() {
-    const playerId = this.$route.params.playerId;
-    this.fetchCurrentPlayerHistory(playerId);
+    this.fetchCurrentPlayerHistory(this.playerId);
   },
   methods: {
     ...mapActions("playerDetails", ["fetchCurrentPlayerHistory"]),

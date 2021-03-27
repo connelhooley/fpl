@@ -51,12 +51,17 @@ import { mapActions, mapGetters } from "vuex";
 import TeamLoading from "./PlayersViewTeamLoading"
 
 export default {
+  props: {
+    teamId: {
+      type: String,
+      required: true,
+    }
+  },
   components: {
     TeamLoading,
   },
   created() {
-    const teamId = this.$route.params.teamId;
-    this.setCurrentTeamId(teamId);
+    this.setCurrentTeamId(this.teamId);
   },
   methods: {
     ...mapActions("teamDetails", ["setCurrentTeamId"]),
