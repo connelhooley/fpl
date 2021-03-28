@@ -5,8 +5,8 @@
     mb-4"
   >
     <router-link
-      v-for="link in links"
-      :key="link.to"
+      v-for="(link, index) in links"
+      :key="index"
       :to="link.to"
       active-class="
         text-white
@@ -27,8 +27,23 @@
 
 <script>
 export default {
-  props: {
-    links: Array,
+  data() {
+    return {
+      links: [
+        {
+          label: "Charts",
+          to: {
+            name: "fdr-charts"
+          },
+        },
+        {
+          label: "Table",
+          to: {
+            name: "fdr-table"
+          },
+        },
+      ],
+    };
   },
 }
 </script>

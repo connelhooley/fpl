@@ -30,7 +30,12 @@ export default {
         .slice(0, 3)
         .map((team) => ({
           type: "team",
-          to: `/players/teams/${team.teamId}`,
+          to: {
+            name: "view-team",
+            params: {
+              playerId: team.teamId,
+            },
+          },
           ...team,
         }));
 
@@ -40,7 +45,12 @@ export default {
         .slice(0, 10)
         .map((player) => ({
           type: "player",
-          to: `/players/player/${player.playerId}`,
+          to: {
+            name: "view-player",
+            params: {
+              playerId: player.playerId,
+            },
+          },
           ...player,
           ...rootState.teams.find((t) => t.teamId === player.teamId),
         }));

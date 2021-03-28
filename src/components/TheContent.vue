@@ -1,5 +1,5 @@
 <template>
   <main class="p-8 w-full">
-    <router-view :key="$route.fullPath"/>
+    <RouterView :key="$route.fullPath"/>
   </main>
 </template>

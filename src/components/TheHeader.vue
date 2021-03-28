@@ -123,11 +123,15 @@ export default {
       menuLinks: [
         {
           label: "FDR",
-          to: "/fdr/",
+          to: {
+            name: "fdr"
+          },
         },
         {
           label: "Players",
-          to: "/players/",
+          to: {
+            name: "view"
+          },
         },
       ],
     };

@@ -29,7 +29,7 @@
       <router-link
         v-for="player in position.players"
         :key="player.playerId"
-        :to="`/players/player/${player.playerId}`"
+        :to="{name: 'view-player', params: {playerId: player.playerId}}"
         class="
           block
           px-4
@@ -48,7 +48,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import TeamLoading from "./PlayersViewTeamLoading"
+import TeamLoading from "../components/TeamLoading"
 
 export default {
   props: {

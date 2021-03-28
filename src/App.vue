@@ -19,6 +19,7 @@ export default {
   created() {
     window.addEventListener("keydown", this.keyHandler);
     this.fetchStatic();
+    this.fetchFixtures();
   },
   destroyed() {
     window.removeEventListener("keydown", this.keyHandler);
@@ -26,6 +27,7 @@ export default {
   methods: {
     ...mapActions("search", ["focusSearchBar"]),
     ...mapActions(["fetchStatic"]),
+    ...mapActions("fixtures", ["fetchFixtures"]),
     keyHandler(e) {
       if (e.code === "KeyK" && e.ctrlKey) {
         this.focusSearchBar();

@@ -4,7 +4,7 @@
       <RouterLink
         v-for="team in teams"
         :key="team.teamId"
-        :to="`/players/teams/${team.teamId}`"
+        :to="{name: 'view-team', params: {teamId: team.teamId}}"
         class="
           block
           text-xl
@@ -33,7 +33,7 @@
 
 <script>
 import { mapState } from "vuex";
-import Loading from "./Loading";
+import Loading from "../components/Loading";
 
 export default {
   components: {
