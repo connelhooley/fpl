@@ -25,8 +25,8 @@ async function createWindow() {
       contextIsolation: true,
       preload: path.join(__dirname, 'preload.js'),
     },
-    width: 1050,
-    height: 750,
+    width: 900,
+    height: 650,
     frame: false,
   })
 
